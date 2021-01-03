@@ -1,0 +1,21 @@
+{
+  "name": "air2firetable",
+  "version": "1.0.0",
+  "description": "Tools for importing data from Airtable to Firetable",
+  "main": "utils.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bbox.digital",
+  "license": "MIT",
+  "dependencies": {
+    "airtable": "^0.10.1",
+    "clui": "^0.3.6",
+    "dotenv": "^8.2.0",
+    "firebase-admin": "^9.4.2",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
+    "puppeteer": "^5.5.0",
+    "ramda": "^0.27.1"
+  }
+}
