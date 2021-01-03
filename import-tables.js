@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-
 const { cursorTo } = require('readline');
 const { Progress } = require('clui');
 const firebase = require('firebase-admin');
 const serviceAccount = require('./firebase-adminsdk.json');
-const { getSchema, getTable } = require('./utils');
+const { getEnv, getSchema, getTable } = require('./utils');
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount)
@@ -38,4 +36,4 @@ const importTables = async (baseId, firestore) => {
   }
 }
 
-importTables(process.env.BASE_ID, firebase.firestore());
+importTables(getEnv('BASE_ID'), firebase.firestore());

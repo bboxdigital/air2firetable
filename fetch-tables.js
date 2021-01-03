@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-
 const inquirer = require('inquirer');
 const { writeJson } = require('fs-extra');
 const Airtable = require('airtable');
-const { getSchema, getTablePath } = require('./utils');
+const { getEnv, getSchema, getTablePath } = require('./utils');
 
 const fetchRecords = (base, table) => {
   let page = 1;
@@ -47,4 +45,4 @@ const run = async (baseId) => {
   await fetchTables(baseId, answers.apiKey);
 }
 
-run(process.env.BASE_ID);
+run(getEnv('BASE_ID'));

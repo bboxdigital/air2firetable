@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-
 const firebase = require('firebase-admin');
 const serviceAccount = require('./firebase-adminsdk.json');
-const { getSchema } = require('./utils');
+const { getEnv, getSchema } = require('./utils');
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount)
@@ -81,4 +79,4 @@ const importSchema = async (baseId, firestore) => {
   }
 };
 
-importSchema(process.env.BASE_ID, firebase.firestore());
+importSchema(getEnv('BASE_ID'), firebase.firestore());

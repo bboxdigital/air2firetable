@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-
 const inquirer = require('inquirer');
 const { writeJson } = require('fs-extra');
 const puppeteer = require('puppeteer');
-const { getSchemaPath } = require('./utils');
+const { getEnv, getSchemaPath } = require('./utils');
 
 const dataScript = () => {
   const data = {...application.tablesById};
@@ -63,4 +61,4 @@ const run = async (baseId) => {
   await fetchSchema(baseId, answers.email, answers.password);
 }
 
-run(process.env.BASE_ID);
+run(getEnv('BASE_ID'));
