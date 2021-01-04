@@ -34,15 +34,8 @@ const fetchTables = async (baseId, apiKey) => {
   };
 }
 
-const run = async (baseId) => {
-  const answers = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'apiKey',
-      message: 'Airtable API key:'
-    }
-  ]);
-  await fetchTables(baseId, answers.apiKey);
+const run = async (baseId, airtableKey) => {
+  await fetchTables(baseId, airtableKey);
 }
 
-run(getEnv('BASE_ID'));
+run(getEnv('BASE_ID'), getEnv('AIRTABLE_KEY'));
