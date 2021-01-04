@@ -1,13 +1,13 @@
 const { cursorTo } = require('readline');
 const { Progress } = require('clui');
-const { getRawSchema, getRawTable } = require('./utils');
+const { loadOutSchema, loadOutTable } = require('./utils');
 
 const importTables = async (baseId, firestore) => {
-  const schema = await getRawSchema(baseId);
+  const schema = await loadOutSchema(baseId);
 
-  for (const table of Object.values(schema)) {
-    console.log(table.name);
-    const tableRows = await getRawTable(table);
+  for (const tableId in schema.schemas) {
+    console.log(schema.schemas[tableId].name);
+    const tableRows = await loadOutTable(tableId);
     const progressBar = new Progress(50);
     let batch = firestore.batch();
 
@@ -15,7 +15,12 @@ const importTables = async (baseId, firestore) => {
       cursorTo(process.stdout, 0);
       process.stdout.write(progressBar.update(idx + 1, tableRows.length));
 
-      batch.set(firestore.collection(table.id).doc(tableRows[idx].id), tableRows[idx].fields);
+      batch.set(
+        firestore
+          .collection(tableId)
+          .doc(tableRows[idx].id),
+        tableRows[idx].fields
+      );
 
       if (idx % 100 == 0) {
         await batch.commit();

@@ -17,6 +17,7 @@ firebase.initializeApp({
 const { getEnv } = require('./utils');
 const { fetchSchema } = require('./fetch-schema');
 const { fetchTables } = require('./fetch-tables');
+const { processSchema } = require('./process-schema');
 const { importSchema } = require('./import-schema');
 const { importTables } = require('./import-tables');
 
@@ -50,6 +51,15 @@ program
   .description('Fetch schema tables from Airtable')
   .action(runFetchTables);
 
+const runProcessSchema = async () => {
+  await processSchema(getEnv('BASE_ID'));
+};
+
+program
+  .command('process-schema')
+  .description('Process schema for Firetable')
+  .action(runProcessSchema);
+
 const runImportSchema = async () => {
   await importSchema(getEnv('BASE_ID'), firebase.firestore());
 };
@@ -81,6 +91,7 @@ const confirmRun = async (fn, name) => {
 const runDefault = async () => {
   await confirmRun(runFetchSchema, 'fetch-schema');
   await confirmRun(runFetchTables, 'fetch-tables');
+  await confirmRun(runProcessSchema, 'process-schema');
   await confirmRun(runImportSchema, 'import-schema');
   await confirmRun(runImportTables, 'import-tables');
 };
