@@ -1,4 +1,4 @@
-const { loadRawSchema, saveOutSchema } = require('./utils');
+const { loadData, saveData } = require('./utils');
 const { typeMap } = require('./constants');
 
 const mapColumn = (column, index) => {
@@ -36,7 +36,7 @@ const getTableSchema = (table) => {
 };
 
 const processSchema = async (baseId) => {
-  const rawSchema = await loadRawSchema(baseId);
+  const rawSchema = await loadData('raw', baseId);
 
   const outSchema = {
     settings: { tables: Object.values(rawSchema).map(table => getTableSettings(table)) },
@@ -47,7 +47,7 @@ const processSchema = async (baseId) => {
     outSchema.schemas[table.id] = getTableSchema(table);
   }
 
-  await saveOutSchema(baseId, outSchema);
+  await saveData('out', baseId, outSchema);
 };
 
 module.exports = {

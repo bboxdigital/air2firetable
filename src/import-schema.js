@@ -1,7 +1,7 @@
-const { loadOutSchema } = require('./utils');
+const { loadData } = require('./utils');
 
 const importSchema = async (baseId, firestore) => {
-  const schema = await loadOutSchema(baseId);
+  const schema = await loadData('out', baseId);
 
   await firestore
     .collection('_FIRETABLE_')

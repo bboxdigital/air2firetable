@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { saveRawSchema } = require('./utils');
+const { saveData } = require('./utils');
 
 const dataScript = () => {
   const data = {...application.tablesById};
@@ -37,7 +37,7 @@ const fetchSchema = async (baseId, email, password) => {
   const data = await page.evaluate(dataScript);
   await browser.close();
 
-  await saveRawSchema(baseId, data);
+  await saveData('raw', baseId, data);
 };
 
 module.exports = {

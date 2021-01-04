@@ -1,18 +1,18 @@
 const R = require('ramda');
-const { loadOutSchema, loadRawTable, saveOutTable } = require('./utils');
+const { loadData, saveData } = require('./utils');
 
 const processTables = async (baseId) => {
-  const schema = await loadOutSchema(baseId);
+  const schema = await loadData('out', baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);
-    const rawRows = await loadRawTable(tableId);
+    const rawRows = await loadData('raw', tableId);
 
     const outRows = R.pipe(
       R.identity
     )(rawRows);
 
-    await saveOutTable(tableId, outRows);
+    await saveData('out', tableId, outRows);
   }
 };
 

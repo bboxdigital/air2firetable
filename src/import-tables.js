@@ -1,13 +1,13 @@
 const { cursorTo } = require('readline');
 const { Progress } = require('clui');
-const { loadOutSchema, loadOutTable } = require('./utils');
+const { loadData } = require('./utils');
 
 const importTables = async (baseId, firestore) => {
-  const schema = await loadOutSchema(baseId);
+  const schema = await loadData('out', baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);
-    const tableRows = await loadOutTable(tableId);
+    const tableRows = await loadData('out', tableId);
     const progressBar = new Progress(50);
     let batch = firestore.batch();
 
