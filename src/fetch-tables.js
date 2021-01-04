@@ -1,4 +1,5 @@
 const Airtable = require('airtable');
+const { cursorTo, clearLine } = require('readline');
 const { loadRawSchema, saveRawTable } = require('./utils');
 
 const fetchRecords = (base, table) => {
@@ -9,10 +10,14 @@ const fetchRecords = (base, table) => {
     base(table.name).select({
       view: table.defaultView.name
     }).eachPage((records, fetchNextPage) => {
-      console.log(records.length, page++);
+      cursorTo(process.stdout, 0);
+      clearLine(process.stdout, 0);
+      process.stdout.write(`${records.length * page++}`);
       records.forEach(record => allRecords.push(record._rawJson));
       fetchNextPage();
     }, (err) => {
+      cursorTo(process.stdout, 0);
+      clearLine(process.stdout, 0);
       err ? reject(err) : resolve(allRecords);
     });
   });
