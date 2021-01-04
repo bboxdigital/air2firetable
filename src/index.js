@@ -22,7 +22,7 @@ const { processTables } = require('./process-tables');
 const { importSchema } = require('./import-schema');
 const { importTables } = require('./import-tables');
 
-const runFetchSchema = async () => {
+const askAirtableCredentials = async () => {
   const answers = await inquirer.prompt([
     {
       type: 'input',
@@ -35,8 +35,10 @@ const runFetchSchema = async () => {
       message: 'Airtable login password:'
     }
   ]);
-  await fetchSchema(getEnv('BASE_ID'), answers.email, answers.password);
+  return [answers.email, answers.password];
 };
+
+const runFetchSchema = async () => await fetchSchema(getEnv('BASE_ID'), ...(await askAirtableCredentials()));
 const runFetchTables = () => fetchTables(getEnv('BASE_ID'), getEnv('AIRTABLE_KEY'));
 const runProcessSchema = () => processSchema(getEnv('BASE_ID'));
 const runProcessTables = () => processTables(getEnv('BASE_ID'));
