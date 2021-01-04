@@ -44,7 +44,7 @@ const processSchema = async (baseId) => {
   }
 
   for (const table of Object.values(rawSchema)) {
-    outSchema[table.id] = getTableSchema(table);
+    outSchema.schemas[table.id] = getTableSchema(table);
   }
 
   await saveOutSchema(baseId, outSchema);

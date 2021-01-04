@@ -15,7 +15,7 @@ const loadOutSchema = (baseId) => readJson(getOutSchemaPath(baseId));
 const saveRawSchema = (baseId, data) => writeJson(getRawSchemaPath(baseId), data);
 const saveOutSchema = (baseId, data) => writeJson(getOutSchemaPath(baseId), data);
 
-const getRawTablePath = (table) => path.resolve('data', `${table.id ?? table}.json`);
+const getRawTablePath = (table) => path.resolve('data', `raw-${table.id ?? table}.json`);
 const getOutTablePath = (table) => path.resolve('data', `out-${table.id ?? table}.json`);
 
 const loadRawTable = (table) => readJson(getRawTablePath(table));
