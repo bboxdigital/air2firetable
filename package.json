@@ -8,12 +8,21 @@
   },
   "author": "bbox.digital",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bboxdigital/air2firetable.git"
+  },
+  "engines": {
+    "node": ">= 14"
+  },
   "dependencies": {
     "airtable": "^0.10.1",
     "clui": "^0.3.6",
+    "commander": "^6.2.1",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.4.2",
     "fs-extra": "^9.0.1",
+    "glob": "^7.1.6",
     "inquirer": "^7.3.3",
     "puppeteer": "^5.5.0",
     "ramda": "^0.27.1"

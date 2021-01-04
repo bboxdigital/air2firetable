@@ -1,14 +1,6 @@
-#!/usr/bin/env node
-
 const { cursorTo } = require('readline');
 const { Progress } = require('clui');
-const firebase = require('firebase-admin');
-const serviceAccount = require('./firebase-adminsdk.json');
-const { getEnv, getSchema, getTable } = require('./utils');
-
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount)
-});
+const { getSchema, getTable } = require('./utils');
 
 const importTables = async (baseId, firestore) => {
   const schema = await getSchema(baseId);
@@ -34,6 +26,8 @@ const importTables = async (baseId, firestore) => {
     batch.commit();
     process.stdout.write('\n');
   }
-}
+};
 
-importTables(getEnv('BASE_ID'), firebase.firestore());
+module.exports = {
+  importTables
+};

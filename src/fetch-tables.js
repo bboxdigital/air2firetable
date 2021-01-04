@@ -1,9 +1,6 @@
-#!/usr/bin/env node
-
-const inquirer = require('inquirer');
 const { writeJson } = require('fs-extra');
 const Airtable = require('airtable');
-const { getEnv, getSchema, getTablePath } = require('./utils');
+const { getSchema, getTablePath } = require('./utils');
 
 const fetchRecords = (base, table) => {
   let page = 1;
@@ -20,7 +17,7 @@ const fetchRecords = (base, table) => {
       err ? reject(err) : resolve(allRecords);
     });
   });
-}
+};
 
 const fetchTables = async (baseId, apiKey) => {
   const schema = await getSchema(baseId);
@@ -32,10 +29,8 @@ const fetchTables = async (baseId, apiKey) => {
     console.log(records.length);
     await writeJson(getTablePath(table), records);
   };
-}
+};
 
-const run = async (baseId, airtableKey) => {
-  await fetchTables(baseId, airtableKey);
-}
-
-run(getEnv('BASE_ID'), getEnv('AIRTABLE_KEY'));
+module.exports = {
+  fetchTables
+};

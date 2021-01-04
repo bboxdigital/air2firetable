@@ -3,12 +3,8 @@ require('dotenv').config();
 const path = require('path');
 const { readJson } = require('fs-extra');
 
-const getEnv = (name) => {
-  if (process.env[name] === undefined) {
-    throw new Error(`undefined environment variable, check .env file: ${name}`);
-  }
-  return process.env[name];
-}
+const getEnv = (name) => process.env[name] ??
+                         (() => { throw new Error(`undefined .env variable: ${name}`); })()
 
 const getSchemaPath = (baseId) => path.resolve('data', `${baseId}.json`);
 

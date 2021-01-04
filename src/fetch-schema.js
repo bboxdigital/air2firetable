@@ -1,9 +1,6 @@
-#!/usr/bin/env node
-
-const inquirer = require('inquirer');
 const { writeJson } = require('fs-extra');
 const puppeteer = require('puppeteer');
-const { getEnv, getSchemaPath } = require('./utils');
+const { getSchemaPath } = require('./utils');
 
 const dataScript = () => {
   const data = {...application.tablesById};
@@ -17,7 +14,7 @@ const dataScript = () => {
     });
   });
   return data;
-}
+};
 
 const fetchSchema = async (baseId, email, password) => {
   const browser = await puppeteer.launch({ headless: false });
@@ -45,20 +42,6 @@ const fetchSchema = async (baseId, email, password) => {
   return data;
 };
 
-const run = async (baseId) => {
-  const answers = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'email',
-      message: 'Airtable login email:'
-    },
-    {
-      type: 'password',
-      name: 'password',
-      message: 'Airtable login password:'
-    }
-  ]);
-  await fetchSchema(baseId, answers.email, answers.password);
-}
-
-run(getEnv('BASE_ID'));
+module.exports = {
+  fetchSchema
+};

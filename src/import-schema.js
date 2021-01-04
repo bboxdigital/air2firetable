@@ -1,12 +1,4 @@
-#!/usr/bin/env node
-
-const firebase = require('firebase-admin');
-const serviceAccount = require('./firebase-adminsdk.json');
-const { getEnv, getSchema } = require('./utils');
-
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount)
-});
+const { getSchema } = require('./utils');
 
 const typeMap = Object.freeze({
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
@@ -79,4 +71,6 @@ const importSchema = async (baseId, firestore) => {
   }
 };
 
-importSchema(getEnv('BASE_ID'), firebase.firestore());
+module.exports = {
+  importSchema
+};
