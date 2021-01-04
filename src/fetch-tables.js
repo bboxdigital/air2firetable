@@ -1,6 +1,6 @@
 const { writeJson } = require('fs-extra');
 const Airtable = require('airtable');
-const { getSchema, getTablePath } = require('./utils');
+const { getRawSchema, getRawTablePath } = require('./utils');
 
 const fetchRecords = (base, table) => {
   let page = 1;
@@ -20,14 +20,14 @@ const fetchRecords = (base, table) => {
 };
 
 const fetchTables = async (baseId, apiKey) => {
-  const schema = await getSchema(baseId);
+  const schema = await getRawSchema(baseId);
   const base = new Airtable({apiKey}).base(baseId);
 
   for (const table of Object.values(schema)) {
     console.log(table.name);
     const records = await fetchRecords(base, table);
     console.log(records.length);
-    await writeJson(getTablePath(table), records);
+    await writeJson(getRawTablePath(table), records);
   };
 };
 

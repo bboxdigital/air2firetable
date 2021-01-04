@@ -1,4 +1,4 @@
-const { getSchema } = require('./utils');
+const { getRawSchema } = require('./utils');
 
 const typeMap = Object.freeze({
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
@@ -36,11 +36,11 @@ const mapColumn = (column, index) => {
   };
 };
 
-const getTableColumns = (table) => {
+const getRawTableColumns = (table) => {
   return Object.fromEntries(table.columns.map((column, index) => [column.name, mapColumn(column, index)]));
 };
 
-const getTableSettings = (table) => {
+const getRawTableSettings = (table) => {
   return {
     tableType: 'primaryCollection',
     collection: table.id,
@@ -52,21 +52,21 @@ const getTableSettings = (table) => {
   };
 };
 
-const getTableSchema = (table) => {
+const getRawTableSchema = (table) => {
   return {
-    ...getTableSettings(table),
-    columns: getTableColumns(table)
+    ...getRawTableSettings(table),
+    columns: getRawTableColumns(table)
   };
 };
 
 const importSchema = async (baseId, firestore) => {
-  const schema = await getSchema(baseId);
+  const schema = await getRawSchema(baseId);
 
-  const settings = { tables: Object.values(schema).map(table => getTableSettings(table)) };
+  const settings = { tables: Object.values(schema).map(table => getRawTableSettings(table)) };
   await firestore.collection('_FIRETABLE_').doc('settings').set(settings);
 
   for (const table of Object.values(schema)) {
-    const tableSchema = getTableSchema(table);
+    const tableSchema = getRawTableSchema(table);
     await firestore.collection('_FIRETABLE_').doc('settings').collection('schema').doc(table.id).set(tableSchema);
   }
 };

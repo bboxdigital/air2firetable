@@ -6,18 +6,26 @@ const { readJson } = require('fs-extra');
 const getEnv = (name) => process.env[name] ??
                          (() => { throw new Error(`undefined .env variable: ${name}`); })()
 
-const getSchemaPath = (baseId) => path.resolve('data', `${baseId}.json`);
+const getRawSchemaPath = (baseId) => path.resolve('data', `${baseId}.json`);
+const getOutSchemaPath = (baseId) => path.resolve('data', `out-${baseId}.json`);
 
-const getSchema = (baseId) => readJson(getSchemaPath(baseId));
+const getRawSchema = (baseId) => readJson(getRawSchemaPath(baseId));
+const getOutSchema = (baseId) => readJson(getOutSchemaPath(baseId));
 
-const getTablePath = (table) => path.resolve('data', `${table.id !== undefined ? table.id : table}.json`);
+const getRawTablePath = (table) => path.resolve('data', `${table.id ?? table}.json`);
+const getOutTablePath = (table) => path.resolve('data', `out-${table.id ?? table}.json`);
 
-const getTable = (table) => readJson(getTablePath(table));
+const getRawTable = (table) => readJson(getRawTablePath(table));
+const getOutTable = (table) => readJson(getOutTablePath(table));
 
 module.exports = {
   getEnv,
-  getSchemaPath,
-  getSchema,
-  getTablePath,
-  getTable
+  getRawSchemaPath,
+  getOutSchemaPath,
+  getRawSchema,
+  getOutSchema,
+  getRawTablePath,
+  getOutTablePath,
+  getRawTable,
+  getOutTable
 }

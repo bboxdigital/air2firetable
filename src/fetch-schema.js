@@ -1,6 +1,6 @@
 const { writeJson } = require('fs-extra');
 const puppeteer = require('puppeteer');
-const { getSchemaPath } = require('./utils');
+const { getRawSchemaPath } = require('./utils');
 
 const dataScript = () => {
   const data = {...application.tablesById};
@@ -38,7 +38,7 @@ const fetchSchema = async (baseId, email, password) => {
   const data = await page.evaluate(dataScript);
   await browser.close();
 
-  writeJson(getSchemaPath(baseId), data);
+  writeJson(getRawSchemaPath(baseId), data);
   return data;
 };
 
