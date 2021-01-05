@@ -1,9 +1,11 @@
-const { cursorTo } = require('readline');
-const { Progress } = require('clui');
-const { loadData } = require('./utils');
+import { cursorTo } from 'readline';
+import { Progress } from 'clui';
+import { loadData } from './utils';
+import { firestore } from 'firebase-admin';
+import { OutSchema } from './types';
 
-const importTables = async (baseId, firestore) => {
-  const schema = await loadData('out', baseId);
+export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
+  const schema: OutSchema = await loadData('out', baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);
@@ -31,8 +33,4 @@ const importTables = async (baseId, firestore) => {
     batch.commit();
     process.stdout.write('\n');
   }
-};
-
-module.exports = {
-  importTables
 };

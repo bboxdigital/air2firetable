@@ -1,4 +1,6 @@
-export const typeMap = Object.freeze({
+import { FiretableFieldType } from './types';
+
+export const typeMap: {[name: string]: FiretableFieldType} = Object.freeze({
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
   'autoNumber': 'NUMBER', // automatically generates a unique, automatically incremented number
   'text': 'SIMPLE_TEXT',

@@ -1,7 +1,8 @@
-const { loadData, saveData } = require('./utils');
-const { typeMap } = require('./constants');
+import { loadData, saveData } from './utils';
+import { typeMap } from './constants';
+import { FiretableColumnSettings, FiretableTableColumns, FiretableTableSchema, FiretableTableSettings, OutSchema, RawSchema, RawSchemaTable, RawSchemaTableColumn } from './types';
 
-const mapColumn = (column, index) => {
+const mapColumn = (column: RawSchemaTableColumn, index: number): FiretableColumnSettings => {
   return {
     config: {},
     fieldName: column.name,
@@ -12,11 +13,11 @@ const mapColumn = (column, index) => {
   };
 };
 
-const getTableColumns = (table) => {
+const getTableColumns = (table: RawSchemaTable): FiretableTableColumns => {
   return Object.fromEntries(table.columns.map((column, index) => [column.name, mapColumn(column, index)]));
 };
 
-const getTableSettings = (table) => {
+const getTableSettings = (table: RawSchemaTable): FiretableTableSettings => {
   return {
     tableType: 'primaryCollection',
     collection: table.id,
@@ -28,17 +29,17 @@ const getTableSettings = (table) => {
   };
 };
 
-const getTableSchema = (table) => {
+const getTableSchema = (table: RawSchemaTable): FiretableTableSchema => {
   return {
     ...getTableSettings(table),
     columns: getTableColumns(table)
   };
 };
 
-const processSchema = async (baseId) => {
-  const rawSchema = await loadData('raw', baseId);
+export const processSchema = async (baseId: string) => {
+  const rawSchema: RawSchema = await loadData('raw', baseId);
 
-  const outSchema = {
+  const outSchema: OutSchema = {
     settings: { tables: Object.values(rawSchema).map(table => getTableSettings(table)) },
     schemas: {}
   }
@@ -48,8 +49,4 @@ const processSchema = async (baseId) => {
   }
 
   await saveData('out', baseId, outSchema);
-};
-
-module.exports = {
-  processSchema
 };

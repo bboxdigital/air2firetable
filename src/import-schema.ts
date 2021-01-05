@@ -1,7 +1,9 @@
-const { loadData } = require('./utils');
+import { firestore } from 'firebase-admin';
+import { OutSchema } from './types';
+import { loadData } from './utils';
 
-const importSchema = async (baseId, firestore) => {
-  const schema = await loadData('out', baseId);
+export const importSchema = async (baseId: string, firestore: firestore.Firestore) => {
+  const schema: OutSchema = await loadData('out', baseId);
 
   await firestore
     .collection('_FIRETABLE_')
@@ -16,8 +18,4 @@ const importSchema = async (baseId, firestore) => {
       .doc(tableId)
       .set(schema.schemas[tableId]);
   }
-};
-
-module.exports = {
-  importSchema
 };

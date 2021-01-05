@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { getAirtableSchema } from './puppeteer-scripts';
+import { RawSchema } from './types';
 import { saveData } from './utils';
 
 export const fetchSchema = async (baseId: string, email: string, password: string) => {
@@ -21,8 +22,8 @@ export const fetchSchema = async (baseId: string, email: string, password: strin
   );
 
   await page.waitForSelector('.docs > .languageTabs > .tab');
-  const data = await page.evaluate(getAirtableSchema);
+  const rawSchema: RawSchema = await page.evaluate(getAirtableSchema);
   await browser.close();
 
-  await saveData('raw', baseId, data);
+  await saveData('raw', baseId, rawSchema);
 };
