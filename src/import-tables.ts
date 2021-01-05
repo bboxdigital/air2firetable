@@ -1,15 +1,15 @@
-import { cursorTo } from 'readline';
-import { Progress } from 'clui';
-import { loadData } from './utils';
-import { firestore } from 'firebase-admin';
-import { OutSchema } from './types';
+import { cursorTo } from "readline";
+import { Progress } from "clui";
+import { loadData } from "./utils";
+import { firestore } from "firebase-admin";
+import { OutSchema } from "./types";
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
-  const schema: OutSchema = await loadData('out', baseId);
+  const schema: OutSchema = await loadData("out", baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);
-    const tableRows = await loadData('out', tableId);
+    const tableRows = await loadData("out", tableId);
     const progressBar = new Progress(50);
     let batch = firestore.batch();
 
@@ -17,12 +17,7 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
       cursorTo(process.stdout, 0);
       process.stdout.write(progressBar.update(idx + 1, tableRows.length));
 
-      batch.set(
-        firestore
-          .collection(tableId)
-          .doc(tableRows[idx].id),
-        tableRows[idx].fields
-      );
+      batch.set(firestore.collection(tableId).doc(tableRows[idx].id), tableRows[idx].fields);
 
       if (idx % 100 == 0) {
         await batch.commit();
@@ -31,6 +26,6 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
     }
 
     batch.commit();
-    process.stdout.write('\n');
+    process.stdout.write("\n");
   }
 };
