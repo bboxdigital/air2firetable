@@ -1,21 +1,8 @@
-const puppeteer = require('puppeteer');
-const { saveData } = require('./utils');
+import puppeteer from 'puppeteer';
+import { getAirtableSchema } from './puppeteer-scripts';
+import { saveData } from './utils';
 
-const dataScript = () => {
-  const data = {...application.tablesById};
-  Object.keys(data).forEach(key => {
-    data[key] = {...data[key]};
-    data[key].columns = [...data[key].columns.map(column => { return {...column}; })];
-    data[key].columns.forEach(column => {
-      if (column.foreignTable && column.foreignTable.id) {
-        column.foreignTable = column.foreignTable.id;
-      }
-    });
-  });
-  return data;
-};
-
-const fetchSchema = async (baseId, email, password) => {
+export const fetchSchema = async (baseId: string, email: string, password: string) => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
@@ -34,12 +21,8 @@ const fetchSchema = async (baseId, email, password) => {
   );
 
   await page.waitForSelector('.docs > .languageTabs > .tab');
-  const data = await page.evaluate(dataScript);
+  const data = await page.evaluate(getAirtableSchema);
   await browser.close();
 
   await saveData('raw', baseId, data);
-};
-
-module.exports = {
-  fetchSchema
 };

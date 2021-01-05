@@ -1,4 +1,4 @@
-const typeMap = Object.freeze({
+export const typeMap = Object.freeze({
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
   'autoNumber': 'NUMBER', // automatically generates a unique, automatically incremented number
   'text': 'SIMPLE_TEXT',
@@ -22,7 +22,3 @@ const typeMap = Object.freeze({
   'checkbox': 'CHECK_BOX',
   'formula': 'JSON' // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
 });
-
-module.exports = {
-  typeMap
-};

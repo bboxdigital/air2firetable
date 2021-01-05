@@ -112,3 +112,6 @@ dist
 
 # Data directory
 data/
+
+# TypeScript
+lib/

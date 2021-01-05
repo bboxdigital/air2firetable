@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "checkJs": false,
+      "esModuleInterop": true,
+      "module": "commonjs",
+      "strict": true,
+      "outDir": "lib",
+      "removeComments": true,
+      "target": "es2020",
+      "sourceMap": true,
+      "typeRoots": [
+        "node_modules/@types",
+        "src/types"
+      ]
+    },
+    "include": ["src/**/*"]
+}
