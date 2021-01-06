@@ -10,13 +10,17 @@ export const getEnv = (name: "BASE_ID" | "AIRTABLE_KEY"): string | never =>
     throw new Error(`undefined .env variable: ${name}`);
   })();
 
-type Kind = "raw" | "out";
+export enum Prefix {
+  Air = "air",
+  Fire = "fire",
+}
 
-export const getFilePath = (kind: Kind, id: string) => path.resolve("data", `${kind}-${id}.json`);
+export const getFilePath = (prefix: Prefix, id: string) =>
+  path.resolve("data", `${prefix}-${id}.json`);
 
-export const loadData = (kind: Kind, id: string) => readJson(getFilePath(kind, id));
+export const loadData = (prefix: Prefix, id: string) => readJson(getFilePath(prefix, id));
 
 type Data = AirtableSchema | AirtableData | FiretableSchema | AirtableData;
 
-export const saveData = (kind: Kind, id: string, data: Data) =>
-  writeJson(getFilePath(kind, id), data);
+export const saveData = (prefix: Prefix, id: string, data: Data) =>
+  writeJson(getFilePath(prefix, id), data);

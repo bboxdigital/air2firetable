@@ -1,15 +1,15 @@
 import { cursorTo } from "readline";
 import { Progress } from "clui";
-import { loadData } from "./utils";
+import { loadData, Prefix } from "./utils";
 import { firestore } from "firebase-admin";
 import { FiretableSchema } from "./types";
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
-  const schema: FiretableSchema = await loadData("out", baseId);
+  const schema: FiretableSchema = await loadData(Prefix.Fire, baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);
-    const tableRows = await loadData("out", tableId);
+    const tableRows = await loadData(Prefix.Fire, tableId);
     const progressBar = new Progress(50);
     let batch = firestore.batch();
 

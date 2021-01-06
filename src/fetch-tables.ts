@@ -2,7 +2,7 @@ import Airtable from "airtable";
 import Table from "airtable/lib/table";
 import Record from "airtable/lib/record";
 import { cursorTo, clearLine } from "readline";
-import { loadData, saveData } from "./utils";
+import { loadData, Prefix, saveData } from "./utils";
 import { AirtableSchema, AirtableTable, AirtableRecord } from "./types";
 
 const fetchRecords = (table: Table, rawTable: AirtableTable): Promise<AirtableRecord[]> => {
@@ -32,13 +32,13 @@ const fetchRecords = (table: Table, rawTable: AirtableTable): Promise<AirtableRe
 };
 
 export const fetchTables = async (baseId: string, apiKey: string) => {
-  const rawSchema: AirtableSchema = (await loadData("raw", baseId)) as AirtableSchema;
+  const airSchema: AirtableSchema = await loadData(Prefix.Air, baseId);
   const base = new Airtable({ apiKey }).base(baseId);
 
-  for (const rawTable of Object.values(rawSchema)) {
-    console.log(rawTable.name);
-    const records: AirtableRecord[] = await fetchRecords(base(rawTable.name), rawTable);
+  for (const airTable of Object.values(airSchema)) {
+    console.log(airTable.name);
+    const records: AirtableRecord[] = await fetchRecords(base(airTable.name), airTable);
     console.log(records.length);
-    await saveData("raw", rawTable.id, records);
+    await saveData(Prefix.Air, airTable.id, records);
   }
 };

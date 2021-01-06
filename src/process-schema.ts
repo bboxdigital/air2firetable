@@ -1,4 +1,4 @@
-import { loadData, saveData } from "./utils";
+import { loadData, Prefix, saveData } from "./utils";
 import { fieldMap } from "./constants";
 import {
   FiretableColumnSettings,
@@ -48,7 +48,7 @@ const getTableSchema = (table: AirtableTable): FiretableTableSchema => {
 };
 
 export const processSchema = async (baseId: string) => {
-  const rawSchema: AirtableSchema = await loadData("raw", baseId);
+  const rawSchema: AirtableSchema = await loadData(Prefix.Air, baseId);
 
   const outSchema: FiretableSchema = {
     settings: { tables: Object.values(rawSchema).map((table) => getTableSettings(table)) },
@@ -59,5 +59,5 @@ export const processSchema = async (baseId: string) => {
     outSchema.schemas[table.id] = getTableSchema(table);
   }
 
-  await saveData("out", baseId, outSchema);
+  await saveData(Prefix.Fire, baseId, outSchema);
 };
