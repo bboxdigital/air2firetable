@@ -1,34 +1,34 @@
 import { loadData, saveData } from "./utils";
-import { typeMap } from "./constants";
+import { fieldMap } from "./constants";
 import {
   FiretableColumnSettings,
   FiretableTableColumns,
   FiretableTableSchema,
   FiretableTableSettings,
-  OutSchema,
-  RawSchema,
-  RawSchemaTable,
-  RawSchemaTableColumn,
+  FiretableSchema,
+  AirtableSchema,
+  AirtableTable,
+  AirtableColumn,
 } from "./types";
 
-const mapColumn = (column: RawSchemaTableColumn, index: number): FiretableColumnSettings => {
+const mapColumn = (column: AirtableColumn, index: number): FiretableColumnSettings => {
   return {
     config: {},
     fieldName: column.name,
     key: column.name,
     name: column.name,
-    type: typeMap[column.type],
+    type: fieldMap[column.type],
     index,
   };
 };
 
-const getTableColumns = (table: RawSchemaTable): FiretableTableColumns => {
+const getTableColumns = (table: AirtableTable): FiretableTableColumns => {
   return Object.fromEntries(
     table.columns.map((column, index) => [column.name, mapColumn(column, index)])
   );
 };
 
-const getTableSettings = (table: RawSchemaTable): FiretableTableSettings => {
+const getTableSettings = (table: AirtableTable): FiretableTableSettings => {
   return {
     tableType: "primaryCollection",
     collection: table.id,
@@ -40,7 +40,7 @@ const getTableSettings = (table: RawSchemaTable): FiretableTableSettings => {
   };
 };
 
-const getTableSchema = (table: RawSchemaTable): FiretableTableSchema => {
+const getTableSchema = (table: AirtableTable): FiretableTableSchema => {
   return {
     ...getTableSettings(table),
     columns: getTableColumns(table),
@@ -48,9 +48,9 @@ const getTableSchema = (table: RawSchemaTable): FiretableTableSchema => {
 };
 
 export const processSchema = async (baseId: string) => {
-  const rawSchema: RawSchema = await loadData("raw", baseId);
+  const rawSchema: AirtableSchema = await loadData("raw", baseId);
 
-  const outSchema: OutSchema = {
+  const outSchema: FiretableSchema = {
     settings: { tables: Object.values(rawSchema).map((table) => getTableSettings(table)) },
     schemas: {},
   };

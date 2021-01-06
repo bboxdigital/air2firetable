@@ -1,6 +1,6 @@
-import { FiretableFieldType } from "./types";
+import { AirtableField, FiretableField } from "./types";
 
-export const typeMap: { [name: string]: FiretableFieldType } = Object.freeze({
+export const fieldMap: { [field in AirtableField]: FiretableField } = {
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
   autoNumber: "NUMBER", // automatically generates a unique, automatically incremented number
   text: "SIMPLE_TEXT",
@@ -24,4 +24,5 @@ export const typeMap: { [name: string]: FiretableFieldType } = Object.freeze({
   rollup: "JSON", // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
   checkbox: "CHECK_BOX",
   formula: "JSON", // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
-});
+};
+Object.freeze(fieldMap);

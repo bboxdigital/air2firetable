@@ -1,9 +1,9 @@
 import { firestore } from "firebase-admin";
-import { OutSchema } from "./types";
+import { FiretableSchema } from "./types";
 import { loadData } from "./utils";
 
 export const importSchema = async (baseId: string, firestore: firestore.Firestore) => {
-  const schema: OutSchema = await loadData("out", baseId);
+  const schema: FiretableSchema = await loadData("out", baseId);
 
   await firestore.collection("_FIRETABLE_").doc("settings").set(schema.settings);
 

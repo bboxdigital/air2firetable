@@ -2,10 +2,10 @@ import { cursorTo } from "readline";
 import { Progress } from "clui";
 import { loadData } from "./utils";
 import { firestore } from "firebase-admin";
-import { OutSchema } from "./types";
+import { FiretableSchema } from "./types";
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
-  const schema: OutSchema = await loadData("out", baseId);
+  const schema: FiretableSchema = await loadData("out", baseId);
 
   for (const tableId in schema.schemas) {
     console.log(schema.schemas[tableId].name);

@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import { getAirtableSchema } from "./puppeteer-scripts";
-import { RawSchema } from "./types";
+import { AirtableSchema } from "./types";
 import { saveData } from "./utils";
 
 export const fetchSchema = async (baseId: string, email: string, password: string) => {
@@ -14,7 +14,7 @@ export const fetchSchema = async (baseId: string, email: string, password: strin
   await page.click('#sign-in-form-fields-root > div > label > input[type="submit"]');
 
   await page.waitForSelector(".docs > .languageTabs > .tab");
-  const rawSchema: RawSchema = await page.evaluate(getAirtableSchema);
+  const rawSchema: AirtableSchema = await page.evaluate(getAirtableSchema);
   await browser.close();
 
   await saveData("raw", baseId, rawSchema);

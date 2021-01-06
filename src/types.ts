@@ -1,8 +1,8 @@
-export type RawSchema = {
-  [tableId: string]: RawSchemaTable;
+export type AirtableSchema = {
+  [tableId: string]: AirtableTable;
 };
 
-export type RawSchemaTable = {
+export type AirtableTable = {
   id: string;
   name: string;
   nameForUrl: string;
@@ -11,27 +11,43 @@ export type RawSchemaTable = {
     id: string;
     name: string;
   };
-  columns: Array<RawSchemaTableColumn>;
+  columns: Array<AirtableColumn>;
   isEmpty: boolean;
   isEmptyDueToFilter: boolean;
   numRecordsToList: number;
-  sampleRows: Array<RawTableRecord>;
+  sampleRows: Array<AirtableRecord>;
 };
 
-export type RawSchemaTableColumn = {
+export type AirtableColumn = {
   id: string;
   name: string;
-  type: string;
+  type: AirtableField;
   typeOptions: object | null;
 };
 
-export type RawTable = Array<RawTableRecord>;
+export type AirtableData = Array<AirtableRecord>;
 
-export type RawTableRecord = {
+export type AirtableRecord = {
   [columnName: string]: string | number | object | null;
 };
 
-export type FiretableFieldType =
+export type AirtableField =
+  | "text"
+  | "multilineText"
+  | "checkbox"
+  | "number"
+  | "date"
+  | "multipleAttachment"
+  | "select"
+  | "multiSelect"
+  | "foreignKey"
+  | "lookup"
+  | "richText"
+  | "rollup"
+  | "formula"
+  | "autoNumber";
+
+export type FiretableField =
   | "SIMPLE_TEXT"
   | "LONG_TEXT"
   | "EMAIL"
@@ -65,6 +81,15 @@ export type FiretableFieldType =
 
 export type FiretableRole = string;
 
+export type FiretableColumnSettings = {
+  config: object;
+  fieldName: string;
+  key: string;
+  name: string;
+  type: FiretableField;
+  index: number;
+};
+
 export type FiretableTableSettings = {
   tableType: "primaryCollection" | "collectionGroup";
   collection: string;
@@ -75,15 +100,6 @@ export type FiretableTableSettings = {
   section: string;
 };
 
-export type FiretableColumnSettings = {
-  config: object;
-  fieldName: string;
-  key: string;
-  name: string;
-  type: FiretableFieldType;
-  index: number;
-};
-
 export type FiretableTableColumns = {
   [columnName: string]: FiretableColumnSettings;
 };
@@ -92,7 +108,7 @@ export type FiretableTableSchema = FiretableTableSettings & {
   columns: FiretableTableColumns;
 };
 
-export type OutSchema = {
+export type FiretableSchema = {
   settings: {
     tables: Array<FiretableTableSettings>;
   };
