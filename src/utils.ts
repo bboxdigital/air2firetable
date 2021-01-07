@@ -23,5 +23,10 @@ export const loadFile = (prefix: Prefix, id: string) => readJson(getFilePath(pre
 
 type Data = AirtableSchema | AirtableRecords | FiretableSchema | FiretableRecords;
 
-export const saveFile = (prefix: Prefix, id: string, data: Data) =>
+type SaveFile = {
+  (prefix: Prefix.Airtable, id: string, data: AirtableSchema | AirtableRecords): Promise<void>;
+  (prefix: Prefix.Firetable, id: string, data: FiretableSchema | FiretableRecords): Promise<void>;
+};
+
+export const saveFile: SaveFile = (prefix: Prefix, id: string, data: Data) =>
   writeJson(getFilePath(prefix, id), data);
