@@ -25,10 +25,13 @@ export type AirtableColumn = {
   typeOptions: object | null;
 };
 
-export type AirtableData = Array<AirtableRecord>;
+export type AirtableRecords = Array<AirtableRecord>;
 
 export type AirtableRecord = {
-  [columnName: string]: string | number | object | null;
+  id: string;
+  fields: {
+    [columnName: string]: string | number | object | null;
+  };
 };
 
 export type AirtableField =
@@ -114,5 +117,14 @@ export type FiretableSchema = {
   };
   schemas: {
     [tableId: string]: FiretableTableSchema;
+  };
+};
+
+export type FiretableRecords = Array<FiretableRecord>;
+
+export type FiretableRecord = {
+  id: string;
+  fields: {
+    [columnName: string]: string | number | object | null;
   };
 };

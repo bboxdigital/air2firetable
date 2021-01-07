@@ -2,17 +2,17 @@ import Airtable from "airtable";
 import Table from "airtable/lib/table";
 import Record from "airtable/lib/record";
 import { cursorTo, clearLine } from "readline";
-import { loadData, Prefix, saveData } from "./utils";
+import { loadFile, Prefix, saveFile } from "./utils";
 import { AirtableSchema, AirtableTable, AirtableRecord } from "./types";
 
-const fetchRecords = (table: Table, rawTable: AirtableTable): Promise<AirtableRecord[]> => {
+const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<AirtableRecord[]> => {
   let page = 1;
   const allRecords: AirtableRecord[] = [];
 
   return new Promise((resolve, reject) => {
     table
       .select({
-        view: rawTable.defaultView.name,
+        view: airtableTable.defaultView.name,
       })
       .eachPage(
         (records: Record[], fetchNextPage: () => void) => {
@@ -32,13 +32,16 @@ const fetchRecords = (table: Table, rawTable: AirtableTable): Promise<AirtableRe
 };
 
 export const fetchTables = async (baseId: string, apiKey: string) => {
-  const airSchema: AirtableSchema = await loadData(Prefix.Air, baseId);
+  const airtableSchema: AirtableSchema = await loadFile(Prefix.Airtable, baseId);
   const base = new Airtable({ apiKey }).base(baseId);
 
-  for (const airTable of Object.values(airSchema)) {
-    console.log(airTable.name);
-    const records: AirtableRecord[] = await fetchRecords(base(airTable.name), airTable);
-    console.log(records.length);
-    await saveData(Prefix.Air, airTable.id, records);
+  for (const airtableTable of Object.values(airtableSchema)) {
+    console.log(airtableTable.name);
+    const airtableRecords: AirtableRecord[] = await fetchRecords(
+      base(airtableTable.name),
+      airtableTable
+    );
+    console.log(airtableRecords.length);
+    await saveFile(Prefix.Airtable, airtableTable.id, airtableRecords);
   }
 };

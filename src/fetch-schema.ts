@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import { getAirtableSchema } from "./puppeteer-scripts";
 import { AirtableSchema } from "./types";
-import { Prefix, saveData } from "./utils";
+import { Prefix, saveFile } from "./utils";
 
 export const fetchSchema = async (baseId: string, email: string, password: string) => {
   const browser = await puppeteer.launch({ headless: false });
@@ -14,8 +14,8 @@ export const fetchSchema = async (baseId: string, email: string, password: strin
   await page.click('#sign-in-form-fields-root > div > label > input[type="submit"]');
 
   await page.waitForSelector(".docs > .languageTabs > .tab");
-  const airSchema: AirtableSchema = await page.evaluate(getAirtableSchema);
+  const airtableSchema: AirtableSchema = await page.evaluate(getAirtableSchema);
   await browser.close();
 
-  await saveData(Prefix.Air, baseId, airSchema);
+  await saveFile(Prefix.Airtable, baseId, airtableSchema);
 };

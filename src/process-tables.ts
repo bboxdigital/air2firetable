@@ -1,16 +1,16 @@
 import R from "ramda";
-import { FiretableSchema, AirtableData } from "./types";
-import { loadData, Prefix, saveData } from "./utils";
+import { FiretableSchema, AirtableRecords, FiretableRecords } from "./types";
+import { loadFile, Prefix, saveFile } from "./utils";
 
 export const processTables = async (baseId: string) => {
-  const schema: FiretableSchema = await loadData(Prefix.Fire, baseId);
+  const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);
 
-  for (const tableId in schema.schemas) {
-    console.log(schema.schemas[tableId].name);
-    const airRows: AirtableData = await loadData(Prefix.Air, tableId);
+  for (const tableId in firetableSchema.schemas) {
+    console.log(firetableSchema.schemas[tableId].name);
+    const airtableRecords: AirtableRecords = await loadFile(Prefix.Airtable, tableId);
 
-    const fireRows = R.pipe(R.identity)(airRows);
+    const firetableRecords: FiretableRecords = R.pipe(R.identity)(airtableRecords);
 
-    await saveData(Prefix.Fire, tableId, fireRows);
+    await saveFile(Prefix.Firetable, tableId, firetableRecords);
   }
 };

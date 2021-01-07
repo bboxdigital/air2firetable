@@ -1,7 +1,7 @@
 import path from "path";
 import { readJson, writeJson } from "fs-extra";
 import dotenv from "dotenv";
-import { AirtableData, FiretableSchema, AirtableSchema } from "./types";
+import { AirtableRecords, FiretableSchema, AirtableSchema, FiretableRecords } from "./types";
 dotenv.config();
 
 export const getEnv = (name: "BASE_ID" | "AIRTABLE_KEY"): string | never =>
@@ -11,16 +11,16 @@ export const getEnv = (name: "BASE_ID" | "AIRTABLE_KEY"): string | never =>
   })();
 
 export enum Prefix {
-  Air = "air",
-  Fire = "fire",
+  Airtable = "airtable",
+  Firetable = "firetable",
 }
 
 export const getFilePath = (prefix: Prefix, id: string) =>
   path.resolve("data", `${prefix}-${id}.json`);
 
-export const loadData = (prefix: Prefix, id: string) => readJson(getFilePath(prefix, id));
+export const loadFile = (prefix: Prefix, id: string) => readJson(getFilePath(prefix, id));
 
-type Data = AirtableSchema | AirtableData | FiretableSchema | AirtableData;
+type Data = AirtableSchema | AirtableRecords | FiretableSchema | FiretableRecords;
 
-export const saveData = (prefix: Prefix, id: string, data: Data) =>
+export const saveFile = (prefix: Prefix, id: string, data: Data) =>
   writeJson(getFilePath(prefix, id), data);
