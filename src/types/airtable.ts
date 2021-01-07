@@ -1,4 +1,4 @@
-import { AirtableField } from "./airtable-fields";
+import { AirtableColumn } from "./airtable-columns";
 
 export type AirtableSchema = {
   [tableId: string]: AirtableTable;
@@ -18,13 +18,6 @@ export type AirtableTable = {
   isEmptyDueToFilter: boolean;
   numRecordsToList: number;
   sampleRows: Array<AirtableRecord>;
-};
-
-export type AirtableColumn = {
-  id: string;
-  name: string;
-  type: AirtableField;
-  typeOptions: object | null;
 };
 
 export type AirtableRecords = Array<AirtableRecord>;

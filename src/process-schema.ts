@@ -1,6 +1,7 @@
 import { loadFile, Prefix, saveFile } from "./utils";
 import { fieldMap } from "./constants";
-import { AirtableSchema, AirtableTable, AirtableColumn } from "./types/airtable";
+import { AirtableSchema, AirtableTable } from "./types/airtable";
+import { AirtableColumn } from "./types/airtable-columns";
 import {
   FiretableColumnSettings,
   FiretableTableColumns,

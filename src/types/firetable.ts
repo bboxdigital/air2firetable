@@ -1,4 +1,4 @@
-import { FiretableField } from "./firetable-fields";
+import { FiretableField } from "./firetable-columns";
 
 export type FiretableSchema = {
   settings: {

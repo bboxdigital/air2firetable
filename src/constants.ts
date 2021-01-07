@@ -1,7 +1,7 @@
-import { AirtableField } from "./types/airtable-fields";
-import { FiretableField } from "./types/firetable-fields";
+import { AirtableColumnType } from "./types/airtable-columns";
+import { FiretableField } from "./types/firetable-columns";
 
-export const fieldMap: { [field in AirtableField]: FiretableField } = {
+export const fieldMap: { [field in AirtableColumnType]: FiretableField } = {
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx
   autoNumber: "NUMBER", // automatically generates a unique, automatically incremented number
   text: "SIMPLE_TEXT",
