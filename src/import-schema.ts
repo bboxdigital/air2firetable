@@ -1,5 +1,5 @@
 import { firestore } from "firebase-admin";
-import { FiretableSchema } from "./types";
+import { FiretableSchema } from "./types/firetable";
 import { loadFile, Prefix } from "./utils";
 
 export const importSchema = async (baseId: string, firestore: firestore.Firestore) => {

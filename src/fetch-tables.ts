@@ -3,7 +3,7 @@ import Table from "airtable/lib/table";
 import Record from "airtable/lib/record";
 import { cursorTo, clearLine } from "readline";
 import { loadFile, Prefix, saveFile } from "./utils";
-import { AirtableSchema, AirtableTable, AirtableRecord } from "./types";
+import { AirtableSchema, AirtableTable, AirtableRecord } from "./types/airtable";
 
 const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<AirtableRecord[]> => {
   let page = 1;

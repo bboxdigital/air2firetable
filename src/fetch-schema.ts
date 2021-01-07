@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import { getAirtableSchema } from "./puppeteer-scripts";
-import { AirtableSchema } from "./types";
+import { AirtableSchema } from "./types/airtable";
 import { Prefix, saveFile } from "./utils";
 
 export const fetchSchema = async (baseId: string, email: string, password: string) => {

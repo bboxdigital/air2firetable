@@ -2,7 +2,7 @@ import { cursorTo } from "readline";
 import { Progress } from "clui";
 import { loadFile, Prefix } from "./utils";
 import { firestore } from "firebase-admin";
-import { FiretableRecords, FiretableSchema } from "./types";
+import { FiretableRecords, FiretableSchema } from "./types/firetable";
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
   const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);

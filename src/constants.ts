@@ -1,4 +1,5 @@
-import { AirtableField, FiretableField } from "./types";
+import { AirtableField } from "./types/airtable";
+import { FiretableField } from "./types/firetable";
 
 export const fieldMap: { [field in AirtableField]: FiretableField } = {
   // see: https://github.com/AntlerVC/firetable/blob/master/www/src/constants/fields.tsx

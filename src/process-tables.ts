@@ -1,5 +1,6 @@
 import R from "ramda";
-import { FiretableSchema, AirtableRecords, FiretableRecords } from "./types";
+import { AirtableRecords } from "./types/airtable";
+import { FiretableSchema, FiretableRecords } from "./types/firetable";
 import { loadFile, Prefix, saveFile } from "./utils";
 
 export const processTables = async (baseId: string) => {

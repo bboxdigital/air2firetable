@@ -1,7 +1,8 @@
 import path from "path";
 import { readJson, writeJson } from "fs-extra";
 import dotenv from "dotenv";
-import { AirtableRecords, FiretableSchema, AirtableSchema, FiretableRecords } from "./types";
+import { AirtableRecords, AirtableSchema } from "./types/airtable";
+import { FiretableSchema, FiretableRecords } from "./types/firetable";
 dotenv.config();
 
 export const getEnv = (name: "BASE_ID" | "AIRTABLE_KEY"): string | never =>

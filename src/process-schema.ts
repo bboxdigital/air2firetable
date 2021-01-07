@@ -1,15 +1,13 @@
 import { loadFile, Prefix, saveFile } from "./utils";
 import { fieldMap } from "./constants";
+import { AirtableSchema, AirtableTable, AirtableColumn } from "./types/airtable";
 import {
   FiretableColumnSettings,
   FiretableTableColumns,
   FiretableTableSchema,
   FiretableTableSettings,
   FiretableSchema,
-  AirtableSchema,
-  AirtableTable,
-  AirtableColumn,
-} from "./types";
+} from "./types/firetable";
 
 const mapColumn = (column: AirtableColumn, index: number): FiretableColumnSettings => {
   return {
