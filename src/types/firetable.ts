@@ -1,3 +1,5 @@
+import { FiretableField } from "./firetable-fields";
+
 export type FiretableSchema = {
   settings: {
     tables: Array<FiretableTableSettings>;
@@ -44,35 +46,3 @@ export type FiretableRecord = {
     [columnName: string]: string | number | object | null;
   };
 };
-
-export type FiretableField =
-  | "SIMPLE_TEXT"
-  | "LONG_TEXT"
-  | "EMAIL"
-  | "PHONE_NUMBER"
-  | "CHECK_BOX"
-  | "NUMBER"
-  | "PERCENTAGE"
-  | "DATE"
-  | "DATE_TIME"
-  | "DURATION"
-  | "URL"
-  | "RATING"
-  | "IMAGE"
-  | "FILE"
-  | "SINGLE_SELECT"
-  | "MULTI_SELECT"
-  | "SUB_TABLE"
-  | "DOCUMENT_SELECT"
-  | "SERVICE_SELECT"
-  | "JSON"
-  | "CODE"
-  | "RICH_TEXT"
-  | "ACTION"
-  | "DERIVATIVE"
-  | "AGGREGATE"
-  | "COLOR"
-  | "SLIDER"
-  | "USER"
-  | "ID"
-  | "LAST";

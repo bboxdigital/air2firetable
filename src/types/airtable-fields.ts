@@ -1,0 +1,15 @@
+export type AirtableField =
+  | "text"
+  | "multilineText"
+  | "checkbox"
+  | "number"
+  | "date"
+  | "multipleAttachment"
+  | "select"
+  | "multiSelect"
+  | "foreignKey"
+  | "lookup"
+  | "richText"
+  | "rollup"
+  | "formula"
+  | "autoNumber";

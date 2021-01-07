@@ -1,3 +1,5 @@
+import { AirtableField } from "./airtable-fields";
+
 export type AirtableSchema = {
   [tableId: string]: AirtableTable;
 };
@@ -33,19 +35,3 @@ export type AirtableRecord = {
     [columnName: string]: string | number | object | null;
   };
 };
-
-export type AirtableField =
-  | "text"
-  | "multilineText"
-  | "checkbox"
-  | "number"
-  | "date"
-  | "multipleAttachment"
-  | "select"
-  | "multiSelect"
-  | "foreignKey"
-  | "lookup"
-  | "richText"
-  | "rollup"
-  | "formula"
-  | "autoNumber";
