@@ -3,14 +3,14 @@ import { fieldMap } from "./constants";
 import { AirtableSchema, AirtableTable } from "./types/airtable";
 import { AirtableColumn } from "./types/airtable-columns";
 import {
-  FiretableColumnSettings,
   FiretableTableColumns,
   FiretableTableSchema,
   FiretableTableSettings,
   FiretableSchema,
 } from "./types/firetable";
+import { FiretableColumn } from "./types/firetable-columns";
 
-const mapColumn = (column: AirtableColumn, index: number): FiretableColumnSettings => {
+const mapColumn = (column: AirtableColumn, index: number): FiretableColumn => {
   return {
     config: {},
     fieldName: column.name,

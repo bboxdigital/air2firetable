@@ -1,4 +1,4 @@
-import { FiretableField } from "./firetable-columns";
+import { FiretableColumn } from "./firetable-columns";
 
 export type FiretableSchema = {
   settings: {
@@ -26,16 +26,7 @@ export type FiretableTableSchema = FiretableTableSettings & {
 };
 
 export type FiretableTableColumns = {
-  [columnName: string]: FiretableColumnSettings;
-};
-
-export type FiretableColumnSettings = {
-  config: object;
-  fieldName: string;
-  key: string;
-  name: string;
-  type: FiretableField;
-  index: number;
+  [columnName: string]: FiretableColumn;
 };
 
 export type FiretableRecords = Array<FiretableRecord>;
