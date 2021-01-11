@@ -1,4 +1,3 @@
-import R from "ramda";
 import { AirtableRecords } from "./types/airtable";
 import { FiretableSchema, FiretableRecords } from "./types/firetable";
 import { loadFile, Prefix, saveFile } from "./utils";
@@ -10,7 +9,7 @@ export const processTables = async (baseId: string) => {
     console.log(firetableSchema.schemas[tableId].name);
     const airtableRecords: AirtableRecords = await loadFile(Prefix.Airtable, tableId);
 
-    const firetableRecords: FiretableRecords = R.pipe(R.identity)(airtableRecords);
+    const firetableRecords: FiretableRecords = airtableRecords;
 
     await saveFile(Prefix.Firetable, tableId, firetableRecords);
   }
