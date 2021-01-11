@@ -15,9 +15,9 @@ import {
 import { FiretableBaseColumn, FiretableSelectColumn } from "./types/firetable-columns";
 
 const getCommonColumnProperties = (column: AirtableColumn, index: number) => ({
-  key: column.name,
+  key: column.id,
+  fieldName: column.id,
   name: column.name,
-  fieldName: column.name,
   index,
 });
 
@@ -53,7 +53,7 @@ const mapColumn = (column: AirtableColumn, index: number): FiretableBaseColumn =
 };
 
 const getTableColumns = (table: AirtableTable): FiretableTableColumns =>
-  Object.fromEntries(table.columns.map((column, index) => [column.name, mapColumn(column, index)]));
+  Object.fromEntries(table.columns.map((column, index) => [column.id, mapColumn(column, index)]));
 
 const getTableSettings = (table: AirtableTable): FiretableTableSettings => ({
   tableType: "primaryCollection",

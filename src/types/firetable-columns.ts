@@ -1,7 +1,7 @@
 export interface FiretableBaseColumn {
   key: string;
-  name: string;
   fieldName: string;
+  name: string;
   index: number;
   type: FiretableColumnType;
   config: object;
