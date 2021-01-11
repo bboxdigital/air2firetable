@@ -1,4 +1,4 @@
-export interface AirtableColumn {
+export interface AirtableBaseColumn {
   id: string;
   name: string;
   type: AirtableColumnType;
@@ -21,19 +21,19 @@ export type AirtableColumnType =
   | "formula"
   | "autoNumber";
 
-export interface AirtableTextColumn extends AirtableColumn {
+export interface AirtableTextColumn extends AirtableBaseColumn {
   type: "text";
   typeOptions: {
     validatorName: "url" | "email" | string;
   } | null;
 }
 
-export interface AirtableMultilineTextColumn extends AirtableColumn {
+export interface AirtableMultilineTextColumn extends AirtableBaseColumn {
   type: "multilineText";
   typeOptions: null;
 }
 
-export interface AirtableCheckboxColumn extends AirtableColumn {
+export interface AirtableCheckboxColumn extends AirtableBaseColumn {
   type: "checkbox";
   typeOptions: {
     color: AirtableColor;
@@ -41,7 +41,7 @@ export interface AirtableCheckboxColumn extends AirtableColumn {
   };
 }
 
-export interface AirtableNumberColumn extends AirtableColumn {
+export interface AirtableNumberColumn extends AirtableBaseColumn {
   type: "number";
   typeOptions: {
     format: "integer" | string;
@@ -50,7 +50,7 @@ export interface AirtableNumberColumn extends AirtableColumn {
   };
 }
 
-export interface AirtableDateColumn extends AirtableColumn {
+export interface AirtableDateColumn extends AirtableBaseColumn {
   type: "date";
   typeOptions: {
     isDateTime: boolean;
@@ -58,25 +58,25 @@ export interface AirtableDateColumn extends AirtableColumn {
   };
 }
 
-export interface AirtableMultipleAttachmentColumn extends AirtableColumn {
+export interface AirtableMultipleAttachmentColumn extends AirtableBaseColumn {
   type: "multipleAttachment";
   typeOptions: {
     unreversed: boolean;
   };
 }
 
-export interface AirtableSelectColumn extends AirtableColumn {
+export interface AirtableSelectColumn extends AirtableBaseColumn {
   type: "select";
   typeOptions: AirtableSelectTypeOptions;
 }
 
-export interface AirtableMultiSelectColumn extends AirtableColumn {
+export interface AirtableMultiSelectColumn extends AirtableBaseColumn {
   type: "multiSelect";
   typeOptions: AirtableSelectTypeOptions;
 }
 
 export type AirtableSelectTypeOptions = {
-  choiceOrder: Array<string>;
+  choiceOrder: Array<string>; // choiceIds
   choices: {
     [choiceId: string]: AirtableSelectChoice;
   };
@@ -89,7 +89,7 @@ export type AirtableSelectChoice = {
   name: string;
 };
 
-export interface AirtableForeignKeyColumn extends AirtableColumn {
+export interface AirtableForeignKeyColumn extends AirtableBaseColumn {
   type: "foreignKey";
   typeOptions: {
     foreignTableId: string;
@@ -100,7 +100,7 @@ export interface AirtableForeignKeyColumn extends AirtableColumn {
   foreignTable: string; // id
 }
 
-export interface AirtableLookupColumn extends AirtableColumn {
+export interface AirtableLookupColumn extends AirtableBaseColumn {
   type: "lookup";
   typeOptions: {
     relationColumnId: string;
@@ -115,12 +115,12 @@ export interface AirtableLookupColumn extends AirtableColumn {
   foreignTableRollupColumnName: string;
 }
 
-export interface AirtableRichTextColumn extends AirtableColumn {
+export interface AirtableRichTextColumn extends AirtableBaseColumn {
   type: "richText";
   typeOptions: null;
 }
 
-export interface AirtableRollupColumn extends AirtableColumn {
+export interface AirtableRollupColumn extends AirtableBaseColumn {
   type: "rollup";
   typeOptions: {
     relationColumnId: string;
@@ -135,7 +135,7 @@ export interface AirtableRollupColumn extends AirtableColumn {
   foreignTableRollupColumnName: string;
 }
 
-export interface AirtableFormulaColumn extends AirtableColumn {
+export interface AirtableFormulaColumn extends AirtableBaseColumn {
   type: "formula";
   typeOptions: {
     formulaTextParsed: string;
@@ -146,12 +146,28 @@ export interface AirtableFormulaColumn extends AirtableColumn {
   };
 }
 
-export interface AirtableAutoNumberColumn extends AirtableColumn {
+export interface AirtableAutoNumberColumn extends AirtableBaseColumn {
   type: "autoNumber";
   typeOptions: {
     maxUsedAutoNumber: number;
   };
 }
+
+export type AirtableColumn =
+  | AirtableTextColumn
+  | AirtableMultilineTextColumn
+  | AirtableCheckboxColumn
+  | AirtableNumberColumn
+  | AirtableDateColumn
+  | AirtableMultipleAttachmentColumn
+  | AirtableSelectColumn
+  | AirtableMultiSelectColumn
+  | AirtableForeignKeyColumn
+  | AirtableLookupColumn
+  | AirtableRichTextColumn
+  | AirtableRollupColumn
+  | AirtableFormulaColumn
+  | AirtableAutoNumberColumn;
 
 export type AirtableColor =
   | "blue"

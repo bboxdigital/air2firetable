@@ -1,12 +1,14 @@
-import { FiretableColumn } from "./firetable-columns";
+import { FiretableBaseColumn } from "./firetable-columns";
 
 export type FiretableSchema = {
-  settings: {
-    tables: Array<FiretableTableSettings>;
-  };
+  settings: FiretableSettings;
   schemas: {
     [tableId: string]: FiretableTableSchema;
   };
+};
+
+export type FiretableSettings = {
+  tables: Array<FiretableTableSettings>;
 };
 
 export type FiretableTableSettings = {
@@ -26,7 +28,7 @@ export type FiretableTableSchema = FiretableTableSettings & {
 };
 
 export type FiretableTableColumns = {
-  [columnName: string]: FiretableColumn;
+  [columnName: string]: FiretableBaseColumn;
 };
 
 export type FiretableRecords = Array<FiretableRecord>;

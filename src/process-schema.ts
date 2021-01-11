@@ -1,27 +1,59 @@
 import { loadFile, Prefix, saveFile } from "./utils";
 import { fieldMap } from "./constants";
 import { AirtableSchema, AirtableTable } from "./types/airtable";
-import { AirtableColumn } from "./types/airtable-columns";
+import {
+  AirtableColumn,
+  AirtableMultiSelectColumn,
+  AirtableSelectColumn,
+} from "./types/airtable-columns";
 import {
   FiretableTableColumns,
   FiretableTableSchema,
   FiretableTableSettings,
   FiretableSchema,
 } from "./types/firetable";
-import { FiretableColumn } from "./types/firetable-columns";
+import { FiretableBaseColumn, FiretableSelectColumn } from "./types/firetable-columns";
 
-const mapColumn = (column: AirtableColumn, index: number): FiretableColumn => ({
-  config: {},
-  fieldName: column.name,
+const getCommonColumnProperties = (column: AirtableColumn, index: number) => ({
   key: column.name,
   name: column.name,
-  type: fieldMap[column.type],
+  fieldName: column.name,
   index,
 });
 
-const getTableColumns = (table: AirtableTable): FiretableTableColumns => Object.fromEntries(
-  table.columns.map((column, index) => [column.name, mapColumn(column, index)])
-);
+const mapDefaultColumn = (column: AirtableColumn, index: number): FiretableBaseColumn => ({
+  ...getCommonColumnProperties(column, index),
+  type: fieldMap[column.type],
+  config: {},
+});
+
+const mapSelectColumn = (
+  column: AirtableSelectColumn | AirtableMultiSelectColumn,
+  index: number
+): FiretableSelectColumn =>
+  ({
+    ...getCommonColumnProperties(column, index),
+    type: fieldMap[column.type],
+    config: {
+      freeChoice: false,
+      options: column.typeOptions.choiceOrder.map(
+        (choiceId) => column.typeOptions.choices[choiceId].name
+      ),
+    },
+  } as FiretableSelectColumn);
+
+const mapColumn = (column: AirtableColumn, index: number): FiretableBaseColumn => {
+  switch (column.type) {
+    case "select":
+    case "multiSelect":
+      return mapSelectColumn(column, index);
+    default:
+      return mapDefaultColumn(column, index);
+  }
+};
+
+const getTableColumns = (table: AirtableTable): FiretableTableColumns =>
+  Object.fromEntries(table.columns.map((column, index) => [column.name, mapColumn(column, index)]));
 
 const getTableSettings = (table: AirtableTable): FiretableTableSettings => ({
   tableType: "primaryCollection",

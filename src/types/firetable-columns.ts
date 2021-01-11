@@ -1,13 +1,13 @@
-export interface FiretableColumn {
+export interface FiretableBaseColumn {
   key: string;
   name: string;
   fieldName: string;
   index: number;
-  type: FiretableField;
+  type: FiretableColumnType;
   config: object;
 }
 
-export type FiretableField =
+export type FiretableColumnType =
   | "SIMPLE_TEXT" // "Short Text"
   | "LONG_TEXT"
   | "EMAIL"
@@ -38,14 +38,14 @@ export type FiretableField =
   | "USER"
   | "ID";
 
-export interface FiretableTextColumn extends FiretableColumn {
+export interface FiretableTextColumn extends FiretableBaseColumn {
   type: "SIMPLE_TEXT" | "LONG_TEXT";
   config: {
     maxLength?: string; // "255"
   };
 }
 
-export interface FiretableRatingColumn extends FiretableColumn {
+export interface FiretableRatingColumn extends FiretableBaseColumn {
   type: "RATING";
   config: {
     max?: number; // int 1-15
@@ -53,7 +53,7 @@ export interface FiretableRatingColumn extends FiretableColumn {
   };
 }
 
-export interface FiretableSelectColumn extends FiretableColumn {
+export interface FiretableSelectColumn extends FiretableBaseColumn {
   type: "SINGLE_SELECT" | "MULTI_SELECT";
   config: {
     freeText?: boolean; // whether users can add options in-row
@@ -61,49 +61,49 @@ export interface FiretableSelectColumn extends FiretableColumn {
   };
 }
 
-export interface FiretableSubTableColumn extends FiretableColumn {
+export interface FiretableSubTableColumn extends FiretableBaseColumn {
   type: "SUB_TABLE";
   config: {
     parentLabel?: Array<string>; // lets you choose multiple Select fields, not sure why
   };
 }
 
-export interface FiretableDocumentSelectColumn extends FiretableColumn {
+export interface FiretableDocumentSelectColumn extends FiretableBaseColumn {
   type: "DOCUMENT_SELECT";
   config: {
     // TODO
   };
 }
 
-export interface FiretableServiceSelectColumn extends FiretableColumn {
+export interface FiretableServiceSelectColumn extends FiretableBaseColumn {
   type: "SERVICE_SELECT";
   config: {
     // TODO
   };
 }
 
-export interface FiretableActionColumn extends FiretableColumn {
+export interface FiretableActionColumn extends FiretableBaseColumn {
   type: "ACTION";
   config: {
     // TODO
   };
 }
 
-export interface FiretableDerivativeColumn extends FiretableColumn {
+export interface FiretableDerivativeColumn extends FiretableBaseColumn {
   type: "DERIVATIVE";
   config: {
     // TODO
   };
 }
 
-export interface FiretableAggregateColumn extends FiretableColumn {
+export interface FiretableAggregateColumn extends FiretableBaseColumn {
   type: "AGGREGATE";
   config: {
     // TODO
   };
 }
 
-export interface FiretableNoConfigColumn extends FiretableColumn {
+export interface FiretableNoConfigColumn extends FiretableBaseColumn {
   type:
     | "EMAIL"
     | "PHONE_NUMBER"
@@ -124,3 +124,15 @@ export interface FiretableNoConfigColumn extends FiretableColumn {
     | "USER"
     | "ID";
 }
+
+export type FiretableColumn =
+  | FiretableTextColumn
+  | FiretableRatingColumn
+  | FiretableSelectColumn
+  | FiretableSubTableColumn
+  | FiretableDocumentSelectColumn
+  | FiretableServiceSelectColumn
+  | FiretableActionColumn
+  | FiretableDerivativeColumn
+  | FiretableAggregateColumn
+  | FiretableNoConfigColumn;
