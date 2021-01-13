@@ -2,7 +2,8 @@ import { cursorTo } from "readline";
 import { Progress } from "clui";
 import { loadFile, Prefix } from "./utils";
 import { firestore } from "firebase-admin";
-import { FiretableRecords, FiretableSchema } from "./types/firetable";
+import { FiretableSchema } from "./types/firetable";
+import { FiretableRecords } from "./types/firetable-records";
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
   const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);
@@ -22,7 +23,7 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
         firetableRecords[idx].fields
       );
 
-      if (idx % 100 == 0) {
+      if (idx % 200 == 0) {
         await batch.commit();
         batch = firestore.batch();
       }

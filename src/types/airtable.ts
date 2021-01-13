@@ -1,4 +1,5 @@
 import { AirtableColumn } from "./airtable-columns";
+import { AirtableRecords } from "./airtable-records";
 
 export type AirtableSchema = {
   [tableId: string]: AirtableTable;
@@ -17,14 +18,5 @@ export type AirtableTable = {
   isEmpty: boolean;
   isEmptyDueToFilter: boolean;
   numRecordsToList: number;
-  sampleRows: Array<AirtableRecord>;
-};
-
-export type AirtableRecords = Array<AirtableRecord>;
-
-export type AirtableRecord = {
-  id: string;
-  fields: {
-    [columnName: string]: string | number | object | null;
-  };
+  sampleRows: AirtableRecords;
 };

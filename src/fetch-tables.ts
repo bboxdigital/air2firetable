@@ -3,11 +3,12 @@ import Table from "airtable/lib/table";
 import Record from "airtable/lib/record";
 import { cursorTo, clearLine } from "readline";
 import { loadFile, Prefix, saveFile } from "./utils";
-import { AirtableSchema, AirtableTable, AirtableRecord } from "./types/airtable";
+import { AirtableSchema, AirtableTable } from "./types/airtable";
+import { AirtableRecords } from "./types/airtable-records";
 
-const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<AirtableRecord[]> => {
+const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<AirtableRecords> => {
   let page = 1;
-  const allRecords: AirtableRecord[] = [];
+  const allRecords: AirtableRecords = [];
 
   return new Promise((resolve, reject) => {
     table
@@ -37,7 +38,7 @@ export const fetchTables = async (baseId: string, apiKey: string) => {
 
   for (const airtableTable of Object.values(airtableSchema)) {
     console.log(airtableTable.name);
-    const airtableRecords: AirtableRecord[] = await fetchRecords(
+    const airtableRecords: AirtableRecords = await fetchRecords(
       base(airtableTable.name),
       airtableTable
     );

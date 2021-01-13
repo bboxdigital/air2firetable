@@ -30,12 +30,3 @@ export type FiretableTableSchema = FiretableTableSettings & {
 export type FiretableTableColumns = {
   [columnName: string]: FiretableBaseColumn;
 };
-
-export type FiretableRecords = Array<FiretableRecord>;
-
-export type FiretableRecord = {
-  id: string;
-  fields: {
-    [columnName: string]: string | number | object | null;
-  };
-};
