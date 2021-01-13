@@ -24,7 +24,7 @@ export type AirtableColumnType =
 export interface AirtableTextColumn extends AirtableBaseColumn {
   type: "text";
   typeOptions: {
-    validatorName: "url" | "email" | string;
+    validatorName: "url" | "email"; // others?
   } | null;
 }
 
@@ -37,16 +37,16 @@ export interface AirtableCheckboxColumn extends AirtableBaseColumn {
   type: "checkbox";
   typeOptions: {
     color: AirtableColor;
-    icon: "check" | string;
+    icon: "check"; // others?
   };
 }
 
 export interface AirtableNumberColumn extends AirtableBaseColumn {
   type: "number";
   typeOptions: {
-    format: "integer" | string;
+    format: "integer"; // others?
     negative: boolean;
-    validatorName?: "positive" | string;
+    validatorName?: "positive"; // others?
   };
 }
 
@@ -54,7 +54,7 @@ export interface AirtableDateColumn extends AirtableBaseColumn {
   type: "date";
   typeOptions: {
     isDateTime: boolean;
-    dateFormat: "ISO" | string;
+    dateFormat: "ISO"; // others?
   };
 }
 

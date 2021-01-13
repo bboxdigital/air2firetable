@@ -3,6 +3,7 @@ import { fieldMap } from "./constants";
 import { AirtableSchema, AirtableTable } from "./types/airtable";
 import {
   AirtableColumn,
+  AirtableColumnType,
   AirtableMultiSelectColumn,
   AirtableSelectColumn,
 } from "./types/airtable-columns";
@@ -12,7 +13,26 @@ import {
   FiretableTableSettings,
   FiretableSchema,
 } from "./types/firetable";
-import { FiretableBaseColumn, FiretableSelectColumn } from "./types/firetable-columns";
+import {
+  FiretableBaseColumn,
+  FiretableColumnType,
+  FiretableSelectColumn,
+} from "./types/firetable-columns";
+
+const mapType = (column: AirtableColumn): FiretableColumnType => {
+  switch (column.type) {
+    case "text":
+      if (column.typeOptions?.validatorName === "url") {
+        return "URL";
+      } else if (column.typeOptions?.validatorName === "email") {
+        return "EMAIL";
+      } else {
+        return "SIMPLE_TEXT";
+      }
+    default:
+      return fieldMap[column.type];
+  }
+};
 
 const getCommonColumnProperties = (column: AirtableColumn, index: number) => ({
   key: column.id,
@@ -23,7 +43,7 @@ const getCommonColumnProperties = (column: AirtableColumn, index: number) => ({
 
 const mapDefaultColumn = (column: AirtableColumn, index: number): FiretableBaseColumn => ({
   ...getCommonColumnProperties(column, index),
-  type: fieldMap[column.type],
+  type: mapType(column),
   config: {},
 });
 
@@ -33,7 +53,7 @@ const mapSelectColumn = (
 ): FiretableSelectColumn =>
   ({
     ...getCommonColumnProperties(column, index),
-    type: fieldMap[column.type],
+    type: mapType(column),
     config: {
       freeChoice: false,
       options: column.typeOptions.choiceOrder.map(
