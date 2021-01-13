@@ -113,5 +113,8 @@ dist
 # Data directory
 data/
 
+# Firetable directory
+firetable/
+
 # TypeScript
 lib/

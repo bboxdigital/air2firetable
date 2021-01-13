@@ -17,7 +17,8 @@
     "process-tables": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js process-tables",
     "import-schema": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js import-schema",
     "import-tables": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js import-tables",
-    "all": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js"
+    "all": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js",
+    "firetable:init": "./firetable-init.sh"
   },
   "author": "bbox.digital",
   "license": "MIT",
