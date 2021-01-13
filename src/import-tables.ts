@@ -1,9 +1,26 @@
 import { cursorTo } from "readline";
 import { Progress } from "clui";
+import { Timestamp } from "@google-cloud/firestore";
 import { loadFile, Prefix } from "./utils";
 import { firestore } from "firebase-admin";
-import { FiretableSchema } from "./types/firetable";
-import { FiretableRecords } from "./types/firetable-records";
+import { FiretableSchema, FiretableTableColumns } from "./types/firetable";
+import { FiretableRecord, FiretableRecords, FiretableRecordValue } from "./types/firetable-records";
+import { FiretableBaseColumn } from "./types/firetable-columns";
+
+const formatValue = (column: FiretableBaseColumn, value: FiretableRecordValue) => {
+  switch (column.type) {
+    case "DATE":
+    case "DATE_TIME":
+      return Timestamp.fromDate(new Date(Date.parse(value as string)));
+    default:
+      return value;
+  }
+};
+
+const formatFields = (columns: FiretableTableColumns, record: FiretableRecord) =>
+  Object.fromEntries(
+    Object.entries(record.fields).map(([key, value]) => [key, formatValue(columns[key], value)])
+  );
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
   const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);
@@ -20,7 +37,7 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
 
       batch.set(
         firestore.collection(tableId).doc(firetableRecords[idx].id),
-        firetableRecords[idx].fields
+        formatFields(firetableSchema.schemas[tableId].columns, firetableRecords[idx])
       );
 
       if (idx % 200 == 0) {

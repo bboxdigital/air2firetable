@@ -11,10 +11,10 @@ export const fieldMap: { [field in AirtableColumnType]: FiretableColumnType } = 
   richText: "RICH_TEXT",
   foreignKey: "DOCUMENT_SELECT",
   multipleAttachment: "FILE",
-  lookup: "JSON", // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
+  lookup: "JSON", // TODO
   date: "DATE",
-  rollup: "JSON", // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
+  rollup: "JSON", // TODO
   checkbox: "CHECK_BOX",
-  formula: "JSON", // described in column.typeOptions, value is pre-calculated column.typeOptions.resultType
+  formula: "JSON", // TODO
 };
 Object.freeze(fieldMap);

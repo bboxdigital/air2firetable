@@ -29,6 +29,8 @@ const mapType = (column: AirtableColumn): FiretableColumnType => {
       } else {
         return "SIMPLE_TEXT";
       }
+    case "date":
+      return column.typeOptions.isDateTime ? "DATE_TIME" : "DATE";
     default:
       return fieldMap[column.type];
   }
