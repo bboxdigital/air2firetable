@@ -3,6 +3,7 @@ import { fieldMap } from "./constants";
 import { AirtableSchema, AirtableTable } from "./types/airtable";
 import {
   AirtableColumn,
+  AirtableForeignKeyColumn,
   AirtableMultiSelectColumn,
   AirtableSelectColumn,
 } from "./types/airtable-columns";
@@ -15,8 +16,10 @@ import {
 import {
   FiretableBaseColumn,
   FiretableColumnType,
+  FiretableDocumentSelectColumn,
   FiretableSelectColumn,
 } from "./types/firetable-columns";
+import { AlgoliaIndex } from "./types/algolia";
 
 const mapType = (column: AirtableColumn): FiretableColumnType => {
   switch (column.type) {
@@ -63,18 +66,44 @@ const mapSelectColumn = (
     },
   } as FiretableSelectColumn);
 
-const mapColumn = (column: AirtableColumn, index: number): FiretableBaseColumn => {
+const mapForeignKeyColumn = async (
+  column: AirtableForeignKeyColumn,
+  index: number
+): Promise<FiretableDocumentSelectColumn> => {
+  const algoliaIndex: AlgoliaIndex = await loadFile(
+    Prefix.Algolia,
+    column.typeOptions.foreignTableId
+  );
+  return {
+    ...getCommonColumnProperties(column, index),
+    type: "DOCUMENT_SELECT",
+    config: {
+      index: column.typeOptions.foreignTableId,
+      primaryKeys: algoliaIndex.config.fieldsToSync,
+    },
+  };
+};
+
+const mapColumn = async (column: AirtableColumn, index: number): Promise<FiretableBaseColumn> => {
   switch (column.type) {
     case "select":
     case "multiSelect":
       return mapSelectColumn(column, index);
+    case "foreignKey":
+      return mapForeignKeyColumn(column, index);
     default:
       return mapDefaultColumn(column, index);
   }
 };
 
-const getTableColumns = (table: AirtableTable): FiretableTableColumns =>
-  Object.fromEntries(table.columns.map((column, index) => [column.id, mapColumn(column, index)]));
+const getTableColumns = async (table: AirtableTable): Promise<FiretableTableColumns> => {
+  const tableColumns: FiretableTableColumns = {};
+  let index = 0;
+  for (const column of table.columns) {
+    tableColumns[column.id] = await mapColumn(column, index++);
+  }
+  return tableColumns;
+};
 
 const getTableSettings = (table: AirtableTable): FiretableTableSettings => ({
   tableType: "primaryCollection",
@@ -86,9 +115,9 @@ const getTableSettings = (table: AirtableTable): FiretableTableSettings => ({
   section: "Default",
 });
 
-const getTableSchema = (table: AirtableTable): FiretableTableSchema => ({
+const getTableSchema = async (table: AirtableTable): Promise<FiretableTableSchema> => ({
   ...getTableSettings(table),
-  columns: getTableColumns(table),
+  columns: await getTableColumns(table),
 });
 
 export const processSchema = async (baseId: string) => {
@@ -100,7 +129,7 @@ export const processSchema = async (baseId: string) => {
   };
 
   for (const table of Object.values(airtableSchema)) {
-    firetableSchema.schemas[table.id] = getTableSchema(table);
+    firetableSchema.schemas[table.id] = await getTableSchema(table);
   }
 
   await saveFile(Prefix.Firetable, baseId, firetableSchema);
