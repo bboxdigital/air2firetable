@@ -12,10 +12,10 @@ if [ ! -e "firetable" ]; then
     ./firetable-init.sh
 fi
 
-cd firetable/cloud_functions/functions
-
 GSED="$(which gsed)"
 SED=${GSED:-sed}
+
+collections=$(ls data/firetable-tbl*.json | $SED 's/.*-//' | $SED 's/\..*//')
 
 cleanup () {
     git checkout -- .
@@ -25,19 +25,17 @@ cleanup () {
     $SED -i "s/admin.initializeApp()/\/\/admin.initializeApp()/" src/generateConfig.ts
 }
 
-collections=( test )
+cd firetable/cloud_functions/functions
 
 #for function in actionScript webhook; do
 #    cleanup && yarn && firebase deploy --only functions:$function
 #done
 
 function=FT_algolia
-for collection in "${collections[@]}"; do
+for collection in $collections; do
+    config=$(jq .config ../../../data/algolia-$collection.json)
     cleanup && cat > src/functionConfig.ts <<EOF
-export default {
-    name: "$collection",
-    fieldsToSync: ["shortText", "longText"]
-};
+export default $config;
 export const collectionPath = "$collection";
 export const functionName = collectionPath
   .replace("-", "_")
@@ -48,16 +46,16 @@ EOF
 done
 
 #function=FT_derivatives
-#for collection in "${collections[@]}"; do
+#for collection in $collections; do
 #    cleanup && yarn && yarn generateConfig $function $collection && firebase deploy --only functions:$function
 #done
 
 #function=FT_aggregates
-#for collection in "${collections[@]}"; do
+#for collection in $collections; do
 #    cleanup && yarn && yarn generateConfig $function $collection && firebase deploy --only functions:$function
 #done
 
 #function=FT_subTableStats
-#for collection in "${collections[@]}"; do
+#for collection in $collections; do
 #    cleanup && yarn && yarn generateConfig $function $collection && firebase deploy --only functions:$function
 #done
