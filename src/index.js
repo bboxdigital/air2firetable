@@ -19,6 +19,7 @@ const { getEnv } = require("./utils");
 const { fetchSchema } = require("./fetch-schema");
 const { fetchTables } = require("./fetch-tables");
 const { processSchema } = require("./process-schema");
+const { processAlgolia } = require("./process-algolia");
 const { processTables } = require("./process-tables");
 const { importSchema } = require("./import-schema");
 const { importTables } = require("./import-tables");
@@ -43,6 +44,7 @@ const runFetchSchema = async () =>
   await fetchSchema(getEnv("AIRTABLE_BASE_ID"), ...(await askAirtableCredentials()));
 const runFetchTables = () => fetchTables(getEnv("AIRTABLE_BASE_ID"), getEnv("AIRTABLE_API_KEY"));
 const runProcessSchema = () => processSchema(getEnv("AIRTABLE_BASE_ID"));
+const runProcessAlgolia = () => processAlgolia(getEnv("AIRTABLE_BASE_ID"));
 const runProcessTables = () => processTables(getEnv("AIRTABLE_BASE_ID"));
 const runImportSchema = () => importSchema(getEnv("AIRTABLE_BASE_ID"), firebase.firestore());
 const runImportTables = () => importTables(getEnv("AIRTABLE_BASE_ID"), firebase.firestore());
@@ -51,6 +53,7 @@ const commands = [
   [runFetchSchema, "fetch-schema", "Fetch base schema from Airtable"],
   [runFetchTables, "fetch-tables", "Fetch schema tables from Airtable"],
   [runProcessSchema, "process-schema", "Process schema for Firetable"],
+  [runProcessAlgolia, "process-algolia", "Process configs for Algolia"],
   [runProcessTables, "process-tables", "Process tables for Firetable"],
   [runImportSchema, "import-schema", "Import schema into Firetable"],
   [runImportTables, "import-tables", "Import tables into Firetable"],

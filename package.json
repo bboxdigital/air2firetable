@@ -14,6 +14,7 @@
     "fetch-schema": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js fetch-schema",
     "fetch-tables": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js fetch-tables",
     "process-schema": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js process-schema",
+    "process-algolia": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js process-algolia",
     "process-tables": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js process-tables",
     "import-schema": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js import-schema",
     "import-tables": "if [ ! -d lib ]; then tsc; fi && node ./lib/index.js import-tables",

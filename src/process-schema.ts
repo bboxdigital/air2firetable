@@ -3,7 +3,6 @@ import { fieldMap } from "./constants";
 import { AirtableSchema, AirtableTable } from "./types/airtable";
 import {
   AirtableColumn,
-  AirtableColumnType,
   AirtableMultiSelectColumn,
   AirtableSelectColumn,
 } from "./types/airtable-columns";
