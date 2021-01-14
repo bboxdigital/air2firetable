@@ -30,14 +30,3 @@ export type FiretableTableSchema = FiretableTableSettings & {
 export type FiretableTableColumns = {
   [columnName: string]: FiretableBaseColumn;
 };
-
-export type FiretableAlgoliaConfig = {
-  name: string; // "[collection]"
-  subTable?: string; // "[subcollection]"
-  fieldsToSync: Array<string>;
-  requiredFields?: Array<string>;
-  indices?: Array<{
-    name: string;
-    fieldsToSync: Array<string>;
-  }>;
-};

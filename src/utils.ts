@@ -5,6 +5,7 @@ import { AirtableSchema } from "./types/airtable";
 import { AirtableRecords } from "./types/airtable-records";
 import { FiretableSchema } from "./types/firetable";
 import { FiretableRecords } from "./types/firetable-records";
+import { AlgoliaConfig } from "./types/algolia";
 dotenv.config();
 
 export const getEnv = (name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY"): string | never =>
@@ -16,6 +17,7 @@ export const getEnv = (name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY"): string | 
 export enum Prefix {
   Airtable = "airtable",
   Firetable = "firetable",
+  Algolia = "algolia",
 }
 
 export const getFilePath = (prefix: Prefix, id: string) =>
@@ -23,11 +25,12 @@ export const getFilePath = (prefix: Prefix, id: string) =>
 
 export const loadFile = (prefix: Prefix, id: string) => readJson(getFilePath(prefix, id));
 
-type Data = AirtableSchema | AirtableRecords | FiretableSchema | FiretableRecords;
+type Data = AirtableSchema | AirtableRecords | FiretableSchema | FiretableRecords | AlgoliaConfig;
 
 type SaveFile = {
   (prefix: Prefix.Airtable, id: string, data: AirtableSchema | AirtableRecords): Promise<void>;
   (prefix: Prefix.Firetable, id: string, data: FiretableSchema | FiretableRecords): Promise<void>;
+  (prefix: Prefix.Algolia, id: string, data: AlgoliaConfig): Promise<void>;
 };
 
 export const saveFile: SaveFile = (prefix: Prefix, id: string, data: Data) =>
