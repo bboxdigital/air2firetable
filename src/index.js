@@ -40,12 +40,12 @@ const askAirtableCredentials = async () => {
 };
 
 const runFetchSchema = async () =>
-  await fetchSchema(getEnv("BASE_ID"), ...(await askAirtableCredentials()));
-const runFetchTables = () => fetchTables(getEnv("BASE_ID"), getEnv("AIRTABLE_KEY"));
-const runProcessSchema = () => processSchema(getEnv("BASE_ID"));
-const runProcessTables = () => processTables(getEnv("BASE_ID"));
-const runImportSchema = () => importSchema(getEnv("BASE_ID"), firebase.firestore());
-const runImportTables = () => importTables(getEnv("BASE_ID"), firebase.firestore());
+  await fetchSchema(getEnv("AIRTABLE_BASE_ID"), ...(await askAirtableCredentials()));
+const runFetchTables = () => fetchTables(getEnv("AIRTABLE_BASE_ID"), getEnv("AIRTABLE_API_KEY"));
+const runProcessSchema = () => processSchema(getEnv("AIRTABLE_BASE_ID"));
+const runProcessTables = () => processTables(getEnv("AIRTABLE_BASE_ID"));
+const runImportSchema = () => importSchema(getEnv("AIRTABLE_BASE_ID"), firebase.firestore());
+const runImportTables = () => importTables(getEnv("AIRTABLE_BASE_ID"), firebase.firestore());
 
 const commands = [
   [runFetchSchema, "fetch-schema", "Fetch base schema from Airtable"],

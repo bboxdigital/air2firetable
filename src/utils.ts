@@ -7,7 +7,7 @@ import { FiretableSchema } from "./types/firetable";
 import { FiretableRecords } from "./types/firetable-records";
 dotenv.config();
 
-export const getEnv = (name: "BASE_ID" | "AIRTABLE_KEY"): string | never =>
+export const getEnv = (name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY"): string | never =>
   process.env[name] ??
   (() => {
     throw new Error(`undefined .env variable: ${name}`);
