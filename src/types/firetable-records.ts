@@ -7,6 +7,14 @@ export type FiretableRecord = {
   };
 };
 
+export type FiretableRecordDocumentSelect = Array<{
+  docPath: string; // '[collection]/[docId]'
+  snapshot: {
+    objectID: string; // '[docId]'
+    [columnName: string]: FiretableRecordValue; // fieldsToSync from Algolia
+  };
+}>;
+
 export type FiretableRecordFile = Array<{
   name: string; // fileName
   type: string; // MIME type

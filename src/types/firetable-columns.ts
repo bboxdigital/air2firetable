@@ -71,7 +71,9 @@ export interface FiretableSubTableColumn extends FiretableBaseColumn {
 export interface FiretableDocumentSelectColumn extends FiretableBaseColumn {
   type: "DOCUMENT_SELECT";
   config: {
-    // TODO
+    index: string; // Algolia index name, e.g. "[collection]"
+    primaryKeys: Array<string>; // fieldsToSync from Algolia to use as display
+    filters?: string;
   };
 }
 
