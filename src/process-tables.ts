@@ -1,17 +1,27 @@
 import { AirtableSchema } from "./types/airtable";
 import {
+  AirtableRecordForeignKey,
   AirtableRecordMultipleAttachment,
   AirtableRecords,
   AirtableRecordValue,
 } from "./types/airtable-records";
-import { AirtableColumn, AirtableMultipleAttachmentColumn } from "./types/airtable-columns";
+import {
+  AirtableColumn,
+  AirtableForeignKeyColumn,
+  AirtableMultipleAttachmentColumn,
+} from "./types/airtable-columns";
 import { FiretableSchema } from "./types/firetable";
 import {
+  FiretableRecord,
+  FiretableRecordDocumentSelect,
   FiretableRecordFile,
   FiretableRecords,
   FiretableRecordValue,
 } from "./types/firetable-records";
 import { loadFile, Prefix, saveFile } from "./utils";
+import { AlgoliaIndex } from "./types/algolia";
+
+const algoliaIndices: { [tableId: string]: AlgoliaIndex } = {};
 
 const mapMultipleAttachment = (
   tableId: string,
@@ -27,12 +37,23 @@ const mapMultipleAttachment = (
     lastModifiedTS: Date.now(),
   }));
 
-const mapValue = (
+const mapForeignKey = async (
+  column: AirtableForeignKeyColumn,
+  value: AirtableRecordForeignKey
+): Promise<FiretableRecordDocumentSelect> => {
+  const ftId = column.typeOptions.foreignTableId;
+  if (!algoliaIndices.hasOwnProperty(ftId)) {
+    algoliaIndices[ftId] = await loadFile(Prefix.Algolia, ftId);
+  }
+  return value.map((objectID) => algoliaIndices[ftId].entries[objectID]).flat();
+};
+
+const mapValue = async (
   tableId: string,
   recordId: string,
   column: AirtableColumn,
   value: AirtableRecordValue
-): FiretableRecordValue => {
+): Promise<FiretableRecordValue> => {
   switch (column.type) {
     case "multipleAttachment":
       return mapMultipleAttachment(
@@ -41,6 +62,8 @@ const mapValue = (
         column,
         value as AirtableRecordMultipleAttachment
       );
+    case "foreignKey":
+      return mapForeignKey(column, value as AirtableRecordForeignKey);
     default:
       return value;
   }
@@ -57,15 +80,23 @@ export const processTables = async (baseId: string) => {
     );
     const airtableRecords: AirtableRecords = await loadFile(Prefix.Airtable, tableId);
 
-    const firetableRecords: FiretableRecords = airtableRecords.map(({ id, fields }) => ({
-      id,
-      fields: Object.fromEntries(
-        Object.entries(fields).map(([key, value]) => [
-          nameToColumn[key].id,
-          mapValue(tableId, id, nameToColumn[key], value),
-        ])
-      ),
-    }));
+    const firetableRecords: FiretableRecords = [];
+
+    for (const airtableRecord of airtableRecords) {
+      const firetableRecord: FiretableRecord = {
+        id: airtableRecord.id,
+        fields: {},
+      };
+      for (const [key, value] of Object.entries(airtableRecord.fields)) {
+        firetableRecord.fields[nameToColumn[key].id] = await mapValue(
+          tableId,
+          airtableRecord.id,
+          nameToColumn[key],
+          value
+        );
+      }
+      firetableRecords.push(firetableRecord);
+    }
 
     await saveFile(Prefix.Firetable, tableId, firetableRecords);
   }
