@@ -103,13 +103,13 @@ export interface AirtableForeignKeyColumn extends AirtableBaseColumn {
 export interface AirtableLookupColumn extends AirtableBaseColumn {
   type: "lookup";
   typeOptions: {
-    relationColumnId: string;
-    foreignTableRollupColumnId: string;
-    unreversed: boolean;
+    relationColumnId: string; // foreignKey mapping on current table
+    foreignTableRollupColumnId: string; // column to look up on foreign table
     dependencies: {
-      referencedColumnIdsForValue: Array<string>;
+      referencedColumnIdsForValue: Array<string>; // same as the two CollumndIds
     };
-    resultType: AirtableColumnType;
+    resultType: AirtableColumnType; // note this could be any type, including a foreignKey column
+    [typeOption: string]: string | number | boolean | Array<string> | object; // typeOptions corresponding to the resultType
   };
   foreignTableName: string;
   foreignTableRollupColumnName: string;
