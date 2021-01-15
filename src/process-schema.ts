@@ -4,6 +4,7 @@ import { AirtableSchema, AirtableTable } from "./types/airtable";
 import {
   AirtableColumn,
   AirtableForeignKeyColumn,
+  AirtableLookupColumn,
   AirtableMultiSelectColumn,
   AirtableSelectColumn,
 } from "./types/airtable-columns";
@@ -16,6 +17,7 @@ import {
 import {
   FiretableBaseColumn,
   FiretableColumnType,
+  FiretableDerivativeColumn,
   FiretableDocumentSelectColumn,
   FiretableSelectColumn,
 } from "./types/firetable-columns";
@@ -84,13 +86,42 @@ const mapForeignKeyColumn = async (
   };
 };
 
-const mapColumn = async (column: AirtableColumn, index: number): Promise<FiretableBaseColumn> => {
+const mapLookupColumn = async (
+  table: AirtableTable,
+  column: AirtableLookupColumn,
+  index: number
+): Promise<FiretableDerivativeColumn> => {
+  const relColumn = table.columns.find(
+    (col) => col.id == column.typeOptions.relationColumnId
+  ) as AirtableForeignKeyColumn;
+  return {
+    ...getCommonColumnProperties(column, index),
+    type: "DERIVATIVE",
+    config: {
+      listenerFields: [column.typeOptions.relationColumnId],
+      renderFieldType: fieldMap[column.typeOptions.resultType],
+      script: `
+        const docId = row["${column.typeOptions.relationColumnId}"];
+        const doc = await db.collection("${relColumn.typeOptions.foreignTableId}").doc(docId).get();
+        return doc.data()["${column.typeOptions.foreignTableRollupColumnId}"];
+      `,
+    },
+  };
+};
+
+const mapColumn = async (
+  table: AirtableTable,
+  column: AirtableColumn,
+  index: number
+): Promise<FiretableBaseColumn> => {
   switch (column.type) {
     case "select":
     case "multiSelect":
       return mapSelectColumn(column, index);
     case "foreignKey":
-      return mapForeignKeyColumn(column, index);
+      return await mapForeignKeyColumn(column, index);
+    case "lookup":
+      return await mapLookupColumn(table, column, index);
     default:
       return mapDefaultColumn(column, index);
   }
@@ -100,7 +131,7 @@ const getTableColumns = async (table: AirtableTable): Promise<FiretableTableColu
   const tableColumns: FiretableTableColumns = {};
   let index = 0;
   for (const column of table.columns) {
-    tableColumns[column.id] = await mapColumn(column, index++);
+    tableColumns[column.id] = await mapColumn(table, column, index++);
   }
   return tableColumns;
 };

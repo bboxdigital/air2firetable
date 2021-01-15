@@ -11,7 +11,7 @@ export const fieldMap: { [field in AirtableColumnType]: FiretableColumnType } = 
   richText: "RICH_TEXT",
   foreignKey: "DOCUMENT_SELECT",
   multipleAttachment: "FILE",
-  lookup: "JSON", // TODO
+  lookup: "DERIVATIVE",
   date: "DATE",
   rollup: "JSON", // TODO
   checkbox: "CHECK_BOX",

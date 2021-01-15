@@ -94,7 +94,9 @@ export interface FiretableActionColumn extends FiretableBaseColumn {
 export interface FiretableDerivativeColumn extends FiretableBaseColumn {
   type: "DERIVATIVE";
   config: {
-    // TODO
+    listenerFields: Array<string>; // columnIds which trigger the derivative
+    renderFieldType: FiretableColumnType; // value type
+    script: string; // JS function body: (db: Firestore, row: DocumentData, ref: DocumentReference) => value
   };
 }
 
