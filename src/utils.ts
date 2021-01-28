@@ -8,7 +8,9 @@ import { FiretableRecords } from "./types/firetable-records";
 import { AlgoliaIndex } from "./types/algolia";
 dotenv.config();
 
-export const getEnv = (name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY"): string | never =>
+export const getEnv = (
+  name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY" | "FIREBASE_ADMINSDK"
+): string | never =>
   process.env[name] ??
   (() => {
     throw new Error(`undefined .env variable: ${name}`);

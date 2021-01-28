@@ -10,12 +10,22 @@ program.version(version);
 const firebase = require("firebase-admin");
 const glob = require("glob");
 const { readJsonSync } = require("fs-extra");
-const serviceAccount = readJsonSync(glob.sync("*firebase-adminsdk*.json")[0]);
+const { getEnv } = require("./utils");
+let firebaseAdminSDK = process.env.FIREBASE_ADMINSDK || getEnv("FIREBASE_ADMINSDK");
+if (!firebaseAdminSDK) {
+  const globFiles = glob.sync("*firebase-adminsdk*.json");
+  if (globFiles.length === 1) {
+    firebaseAdminSDK = globFiles[0];
+  } else {
+    throw new Error("Unable to determine Firebase Admin SDK file!");
+  }
+}
+console.log(`Using: ${firebaseAdminSDK}`);
+const serviceAccount = readJsonSync(firebaseAdminSDK);
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
 });
 
-const { getEnv } = require("./utils");
 const { fetchSchema } = require("./fetch-schema");
 const { fetchTables } = require("./fetch-tables");
 const { processSchema } = require("./process-schema");
