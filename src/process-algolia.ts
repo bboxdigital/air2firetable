@@ -11,11 +11,17 @@ export const processAlgolia = async (baseId: string) => {
       table.columns.map((column) => [column.name, column.id])
     );
     const primaryColumnId = columnNameMap[table.primaryColumnName];
+    const textColumns = table.columns.filter(
+      (col) =>
+        (col.type === "text" && !col.typeOptions?.validatorName) ||
+        col.type === "multilineText" ||
+        col.type === "richText"
+    );
 
     const algoliaIndex: AlgoliaIndex = {
       config: {
         name: table.id,
-        fieldsToSync: [primaryColumnId],
+        fieldsToSync: Array.from(new Set([primaryColumnId, ...textColumns.map((col) => col.id)])),
         requiredFields: [primaryColumnId],
       },
       entries: {},
@@ -30,6 +36,7 @@ export const processAlgolia = async (baseId: string) => {
           snapshot: {
             objectID: record.id,
             [primaryColumnId]: record.fields[table.primaryColumnName],
+            ...Object.fromEntries(textColumns.map((col) => [col.id, record.fields[col.name]])),
           },
         },
       ];
