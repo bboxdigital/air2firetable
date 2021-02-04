@@ -15,8 +15,10 @@ if [ ! -d "firetable" ]; then
     git clone https://github.com/AntlerVC/firetable.git
 fi
 
-if [ -n "$(ls *firebase-adminsdk*.json 2> /dev/null)" ]; then
-    cp -f *firebase-adminsdk*.json firetable/cloud_functions/functions/firebase-credentials.json
+FIREBASE_ADMINSDK=${FIREBASE_ADMINSDK:-$(grep FIREBASE_ADMINSDK .env | sed 's/.*=//')}
+
+if [ -n "$FIREBASE_ADMINSDK" ] && [ -e $FIREBASE_ADMINSDK ]; then
+    cp -f $FIREBASE_ADMINSDK firetable/cloud_functions/functions/firebase-credentials.json
 else
     echo "Missing Firebase Admin SDK key file"
 fi
