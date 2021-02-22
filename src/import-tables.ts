@@ -40,7 +40,7 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
         formatFields(firetableSchema.schemas[tableId].columns, firetableRecords[idx])
       );
 
-      if (idx % 200 == 0) {
+      if (idx % 100 == 0) {
         await batch.commit();
         batch = firestore.batch();
       }
