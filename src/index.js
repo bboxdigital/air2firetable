@@ -27,12 +27,10 @@ firebase.initializeApp({
 });
 
 const { hooks } = require("./hooks");
-const { plugins } = require("./plugins");
-for (const plugin of plugins) {
-  for (const hook of Object.keys(plugin)) {
-    for (const handler of plugin[hook]) {
-      hooks[hook].push(handler);
-    }
+const { plugin } = require("./plugins/air2firetable-tqec/plugin"); // TODO: clean up
+for (const hook of Object.keys(plugin)) {
+  for (const handler of plugin[hook]) {
+    hooks[hook].push(handler);
   }
 }
 
