@@ -18,8 +18,9 @@ import {
   FiretableRecords,
   FiretableRecordValue,
 } from "./types/firetable-records";
-import { loadFile, Prefix, saveFile } from "./utils";
 import { AlgoliaIndex } from "./types/algolia";
+import { loadFile, Prefix, saveFile } from "./utils";
+import { hooks } from "./hooks";
 
 const algoliaIndices: { [tableId: string]: AlgoliaIndex } = {};
 
@@ -83,10 +84,13 @@ export const processTables = async (baseId: string) => {
     const firetableRecords: FiretableRecords = [];
 
     for (const airtableRecord of airtableRecords) {
-      const firetableRecord: FiretableRecord = {
+      let firetableRecord: FiretableRecord = {
         id: airtableRecord.id,
         fields: {},
       };
+      for (const handler of hooks["onProcessRecord"]) {
+        firetableRecord = handler(firetableSchema, tableId, firetableRecord);
+      }
       for (const [key, value] of Object.entries(airtableRecord.fields)) {
         firetableRecord.fields[nameToColumn[key].id] = await mapValue(
           tableId,

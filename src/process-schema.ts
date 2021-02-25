@@ -22,6 +22,7 @@ import {
   FiretableSelectColumn,
 } from "./types/firetable-columns";
 import { AlgoliaIndex } from "./types/algolia";
+import { hooks } from "./hooks";
 
 const mapType = (column: AirtableColumn): FiretableColumnType => {
   switch (column.type) {
@@ -130,6 +131,9 @@ const mapColumn = async (
 const getTableColumns = async (table: AirtableTable): Promise<FiretableTableColumns> => {
   const tableColumns: FiretableTableColumns = {};
   let index = 0;
+  for (const handler of hooks["onGetTableColumns"]) {
+    index = handler(table, tableColumns, index);
+  }
   for (const column of table.columns) {
     tableColumns[column.id] = await mapColumn(table, column, index++);
   }

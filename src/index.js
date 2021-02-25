@@ -26,6 +26,16 @@ firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
 });
 
+const { hooks } = require("./hooks");
+const { plugins } = require("./plugins");
+for (const plugin of plugins) {
+  for (const hook of Object.keys(plugin)) {
+    for (const handler of plugin[hook]) {
+      hooks[hook].push(handler);
+    }
+  }
+}
+
 const { fetchSchema } = require("./fetch-schema");
 const { fetchTables } = require("./fetch-tables");
 const { processAlgolia } = require("./process-algolia");
