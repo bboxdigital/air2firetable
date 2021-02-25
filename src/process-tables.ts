@@ -5,11 +5,7 @@ import {
   AirtableRecords,
   AirtableRecordValue,
 } from "./types/airtable-records";
-import {
-  AirtableColumn,
-  AirtableForeignKeyColumn,
-  AirtableMultipleAttachmentColumn,
-} from "./types/airtable-columns";
+import { AirtableColumn, AirtableForeignKeyColumn, AirtableMultipleAttachmentColumn } from "./types/airtable-columns";
 import { FiretableSchema } from "./types/firetable";
 import {
   FiretableRecord,
@@ -57,12 +53,7 @@ const mapValue = async (
 ): Promise<FiretableRecordValue> => {
   switch (column.type) {
     case "multipleAttachment":
-      return mapMultipleAttachment(
-        tableId,
-        recordId,
-        column,
-        value as AirtableRecordMultipleAttachment
-      );
+      return mapMultipleAttachment(tableId, recordId, column, value as AirtableRecordMultipleAttachment);
     case "foreignKey":
       return mapForeignKey(column, value as AirtableRecordForeignKey);
     default:

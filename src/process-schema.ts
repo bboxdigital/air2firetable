@@ -63,9 +63,7 @@ const mapSelectColumn = (
     type: mapType(column),
     config: {
       freeChoice: false,
-      options: column.typeOptions.choiceOrder.map(
-        (choiceId) => column.typeOptions.choices[choiceId].name
-      ),
+      options: column.typeOptions.choiceOrder.map((choiceId) => column.typeOptions.choices[choiceId].name),
     },
   } as FiretableSelectColumn);
 
@@ -73,10 +71,7 @@ const mapForeignKeyColumn = async (
   column: AirtableForeignKeyColumn,
   index: number
 ): Promise<FiretableDocumentSelectColumn> => {
-  const algoliaIndex: AlgoliaIndex = await loadFile(
-    Prefix.Algolia,
-    column.typeOptions.foreignTableId
-  );
+  const algoliaIndex: AlgoliaIndex = await loadFile(Prefix.Algolia, column.typeOptions.foreignTableId);
   return {
     ...getCommonColumnProperties(column, index),
     type: "DOCUMENT_SELECT",
@@ -110,11 +105,7 @@ const mapLookupColumn = async (
   };
 };
 
-const mapColumn = async (
-  table: AirtableTable,
-  column: AirtableColumn,
-  index: number
-): Promise<FiretableBaseColumn> => {
+const mapColumn = async (table: AirtableTable, column: AirtableColumn, index: number): Promise<FiretableBaseColumn> => {
   switch (column.type) {
     case "select":
     case "multiSelect":

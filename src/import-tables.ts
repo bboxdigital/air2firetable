@@ -18,9 +18,7 @@ const formatValue = (column: FiretableBaseColumn, value: FiretableRecordValue) =
 };
 
 const formatFields = (columns: FiretableTableColumns, record: FiretableRecord) =>
-  Object.fromEntries(
-    Object.entries(record.fields).map(([key, value]) => [key, formatValue(columns[key], value)])
-  );
+  Object.fromEntries(Object.entries(record.fields).map(([key, value]) => [key, formatValue(columns[key], value)]));
 
 export const importTables = async (baseId: string, firestore: firestore.Firestore) => {
   const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);

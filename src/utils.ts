@@ -8,9 +8,7 @@ import { FiretableRecords } from "./types/firetable-records";
 import { AlgoliaIndex } from "./types/algolia";
 dotenv.config();
 
-export const getEnv = (
-  name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY" | "FIREBASE_ADMINSDK"
-): string | never =>
+export const getEnv = (name: "AIRTABLE_BASE_ID" | "AIRTABLE_API_KEY" | "FIREBASE_ADMINSDK"): string | never =>
   process.env[name] ??
   (() => {
     throw new Error(`undefined .env variable: ${name}`);
@@ -22,8 +20,7 @@ export enum Prefix {
   Algolia = "algolia",
 }
 
-export const getFilePath = (prefix: Prefix, id: string) =>
-  path.resolve("data", `${prefix}-${id}.json`);
+export const getFilePath = (prefix: Prefix, id: string) => path.resolve("data", `${prefix}-${id}.json`);
 
 export const loadFile = (prefix: Prefix, id: string) => readJson(getFilePath(prefix, id));
 
@@ -35,5 +32,4 @@ type SaveFile = {
   (prefix: Prefix.Algolia, id: string, data: AlgoliaIndex): Promise<void>;
 };
 
-export const saveFile: SaveFile = (prefix: Prefix, id: string, data: Data) =>
-  writeJson(getFilePath(prefix, id), data);
+export const saveFile: SaveFile = (prefix: Prefix, id: string, data: Data) => writeJson(getFilePath(prefix, id), data);

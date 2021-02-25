@@ -7,9 +7,7 @@ export const processAlgolia = async (baseId: string) => {
   const airtableSchema: AirtableSchema = await loadFile(Prefix.Airtable, baseId);
 
   for (const table of Object.values(airtableSchema)) {
-    const columnNameMap = Object.fromEntries(
-      table.columns.map((column) => [column.name, column.id])
-    );
+    const columnNameMap = Object.fromEntries(table.columns.map((column) => [column.name, column.id]));
     const primaryColumnId = columnNameMap[table.primaryColumnName];
     const textColumns = table.columns.filter(
       (col) =>

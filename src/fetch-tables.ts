@@ -38,10 +38,7 @@ export const fetchTables = async (baseId: string, apiKey: string) => {
 
   for (const airtableTable of Object.values(airtableSchema)) {
     console.log(airtableTable.name);
-    const airtableRecords: AirtableRecords = await fetchRecords(
-      base(airtableTable.name),
-      airtableTable
-    );
+    const airtableRecords: AirtableRecords = await fetchRecords(base(airtableTable.name), airtableTable);
     console.log(airtableRecords.length);
     await saveFile(Prefix.Airtable, airtableTable.id, airtableRecords);
   }
