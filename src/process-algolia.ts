@@ -19,7 +19,7 @@ export const processAlgolia = async (baseId: string) => {
     const algoliaIndex: AlgoliaIndex = {
       config: {
         name: table.id,
-        fieldsToSync: Array.from(new Set([primaryColumnId, ...textColumns.map((col) => col.id)])),
+        fieldsToSync: [primaryColumnId],
         requiredFields: [primaryColumnId],
       },
       entries: {},
@@ -34,7 +34,6 @@ export const processAlgolia = async (baseId: string) => {
           snapshot: {
             objectID: record.id,
             [primaryColumnId]: record.fields[table.primaryColumnName],
-            ...Object.fromEntries(textColumns.map((col) => [col.id, record.fields[col.name]])),
           },
         },
       ];
