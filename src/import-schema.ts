@@ -13,7 +13,7 @@ export const importSchema = async (baseId: string, firestore: firestore.Firestor
     .then((doc) => doc.data())) as FiretableSettings;
   const mergedSettings: FiretableSettings = {
     tables: [
-      ...currentSettings.tables.filter((table) => !tableIds.includes(table.collection)),
+      ...(currentSettings?.tables || []).filter((table) => !tableIds.includes(table.collection)),
       ...firetableSchema.settings.tables,
     ],
   };
