@@ -6,20 +6,22 @@ export type GetTableColumnsHandler = (
   airtableTable: AirtableTable,
   firetableTableColumns: FiretableTableColumns,
   index: number
-) => number;
+) => Promise<number>;
 
 export type ProcessRecordHandler = (
   firetableSchema: FiretableSchema,
   tableId: string,
   firetableRecord: FiretableRecord
-) => FiretableRecord;
+) => Promise<FiretableRecord>;
 
 export type Hooks = {
   onGetTableColumns: Array<GetTableColumnsHandler>;
-  onProcessRecord: Array<ProcessRecordHandler>;
+  onBeforeProcessRecord: Array<ProcessRecordHandler>;
+  onAfterProcessRecord: Array<ProcessRecordHandler>;
 };
 
 export const hooks: Hooks = {
   onGetTableColumns: [],
-  onProcessRecord: [],
+  onBeforeProcessRecord: [],
+  onAfterProcessRecord: [],
 };

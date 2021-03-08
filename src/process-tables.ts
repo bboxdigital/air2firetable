@@ -79,8 +79,8 @@ export const processTables = async (baseId: string) => {
         id: airtableRecord.id,
         fields: {},
       };
-      for (const handler of hooks["onProcessRecord"]) {
-        firetableRecord = handler(firetableSchema, tableId, firetableRecord);
+      for (const handler of hooks["onBeforeProcessRecord"]) {
+        firetableRecord = await handler(firetableSchema, tableId, firetableRecord);
       }
       for (const [key, value] of Object.entries(airtableRecord.fields)) {
         firetableRecord.fields[nameToColumn[key].id] = await mapValue(
@@ -89,6 +89,9 @@ export const processTables = async (baseId: string) => {
           nameToColumn[key],
           value
         );
+      }
+      for (const handler of hooks["onAfterProcessRecord"]) {
+        firetableRecord = await handler(firetableSchema, tableId, firetableRecord);
       }
       firetableRecords.push(firetableRecord);
     }

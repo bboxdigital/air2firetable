@@ -123,7 +123,7 @@ const getTableColumns = async (table: AirtableTable): Promise<FiretableTableColu
   const tableColumns: FiretableTableColumns = {};
   let index = 0;
   for (const handler of hooks["onGetTableColumns"]) {
-    index = handler(table, tableColumns, index);
+    index = await handler(table, tableColumns, index);
   }
   for (const column of table.columns) {
     tableColumns[column.id] = await mapColumn(table, column, index++);
