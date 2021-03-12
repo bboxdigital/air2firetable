@@ -2,11 +2,16 @@ import { AirtableTable } from "./types/airtable";
 import { FiretableSchema, FiretableTableColumns } from "./types/firetable";
 import { FiretableRecord } from "./types/firetable-records";
 
-export type GetTableColumnsHandler = (
+export type BeforeGetTableColumnsHandler = (
   airtableTable: AirtableTable,
   firetableTableColumns: FiretableTableColumns,
   index: number
 ) => Promise<number>;
+
+export type AfterGetTableColumnsHandler = (
+  airtableTable: AirtableTable,
+  firetableTableColumns: FiretableTableColumns
+) => Promise<FiretableTableColumns>;
 
 export type ProcessRecordHandler = (
   firetableSchema: FiretableSchema,
@@ -15,13 +20,15 @@ export type ProcessRecordHandler = (
 ) => Promise<FiretableRecord>;
 
 export type Hooks = {
-  onGetTableColumns: Array<GetTableColumnsHandler>;
+  onBeforeGetTableColumns: Array<BeforeGetTableColumnsHandler>;
+  onAfterGetTableColumns: Array<AfterGetTableColumnsHandler>;
   onBeforeProcessRecord: Array<ProcessRecordHandler>;
   onAfterProcessRecord: Array<ProcessRecordHandler>;
 };
 
 export const hooks: Hooks = {
-  onGetTableColumns: [],
+  onBeforeGetTableColumns: [],
+  onAfterGetTableColumns: [],
   onBeforeProcessRecord: [],
   onAfterProcessRecord: [],
 };

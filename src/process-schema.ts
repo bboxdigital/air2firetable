@@ -120,13 +120,16 @@ const mapColumn = async (table: AirtableTable, column: AirtableColumn, index: nu
 };
 
 const getTableColumns = async (table: AirtableTable): Promise<FiretableTableColumns> => {
-  const tableColumns: FiretableTableColumns = {};
+  let tableColumns: FiretableTableColumns = {};
   let index = 0;
-  for (const handler of hooks["onGetTableColumns"]) {
+  for (const handler of hooks["onBeforeGetTableColumns"]) {
     index = await handler(table, tableColumns, index);
   }
   for (const column of table.columns) {
     tableColumns[column.id] = await mapColumn(table, column, index++);
+  }
+  for (const handler of hooks["onAfterGetTableColumns"]) {
+    tableColumns = await handler(table, tableColumns);
   }
   return tableColumns;
 };
