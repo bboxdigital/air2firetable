@@ -60,4 +60,9 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
       await batch.commit();
     }
   }
+
+  await firestore.collection("_IMPORT_VERSION_").add({
+    date: new Date().toUTCString(),
+    timestamp: Date.now(),
+  });
 };
