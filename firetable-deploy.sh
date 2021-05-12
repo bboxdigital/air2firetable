@@ -15,14 +15,11 @@ fi
 GSED="$(which gsed)"
 SED=${GSED:-sed}
 
-collections=$(ls data/firetable-tbl*.json | $SED 's/.*-//' | $SED 's/\..*//')
+#collections=$(ls data/firetable-tbl*.json | $SED 's/.*-//' | $SED 's/\..*//')
+collections="tbl7YlQyrwEDbaevb tbl1DydGb7wraZySJ tbl7H2y2WhZ2kg9pV"
 
 cleanup () {
-    git checkout -- .
-    rm src/functionConfig.ts
-    $SED -i "s/\/\/const serviceAccount/const serviceAccount/" src/generateConfig.ts 
-    $SED -i "s/\/\/admin.initializeApp/admin.initializeApp/" src/generateConfig.ts
-    $SED -i "s/admin.initializeApp()/\/\/admin.initializeApp()/" src/generateConfig.ts
+    git checkout -- src/functionConfig.ts
 }
 
 cd firetable/cloud_functions/functions
