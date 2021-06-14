@@ -4,7 +4,7 @@ import { AirtableSchema } from "./types/airtable";
 import { Prefix, saveFile } from "./utils";
 
 export const fetchSchema = async (baseId: string, email: string, password: string) => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   await page.goto(`https://airtable.com/login?continue=/${baseId}/api/docs`);
