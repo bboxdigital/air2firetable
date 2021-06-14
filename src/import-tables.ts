@@ -29,13 +29,13 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
     const existingRefMap = Object.fromEntries(existingRecords.docs.map((doc) => [doc.id, doc.ref]));
 
     const firetableRecords: FiretableRecords = await loadFile(Prefix.Firetable, tableId);
-    const progressBar = new Progress(50);
+    // const progressBar = new Progress(50);
     let batch = firestore.batch();
 
     console.log(`Importing: ${firetableRecords.length}`);
     for (let idx = 0; idx < firetableRecords.length; idx++) {
-      cursorTo(process.stdout, 0);
-      process.stdout.write(progressBar.update(idx + 1, firetableRecords.length));
+      // cursorTo(process.stdout, 0);
+      // process.stdout.write(progressBar.update(idx + 1, firetableRecords.length));
 
       delete existingRefMap[firetableRecords[idx].id];
       batch.set(
@@ -50,7 +50,7 @@ export const importTables = async (baseId: string, firestore: firestore.Firestor
     }
 
     await batch.commit();
-    process.stdout.write("\n");
+    // process.stdout.write("\n");
 
     const toDelete = Object.keys(existingRefMap);
     console.log(`Deleting: ${toDelete.length}\n`);

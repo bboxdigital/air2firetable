@@ -66,7 +66,7 @@ export const processTables = async (baseId: string) => {
   const firetableSchema: FiretableSchema = await loadFile(Prefix.Firetable, baseId);
 
   for (const tableId in firetableSchema.schemas) {
-    console.log(firetableSchema.schemas[tableId].name);
+    // console.log(firetableSchema.schemas[tableId].name);
     const nameToColumn: { [key: string]: AirtableColumn } = Object.fromEntries(
       Object.values(airtableSchema[tableId].columns).map((value) => [value.name, value])
     );

@@ -6,10 +6,7 @@ import { Prefix, saveFile } from "./utils";
 export const fetchSchema = async (baseId: string, email: string, password: string) => {
   const browser = await puppeteer.launch({
     headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ]
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
 
