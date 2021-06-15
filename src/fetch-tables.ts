@@ -17,15 +17,15 @@ const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<Airta
       })
       .eachPage(
         (records: Record[], fetchNextPage: () => void) => {
-          cursorTo(process.stdout, 0);
-          clearLine(process.stdout, 0);
-          process.stdout.write(`${records.length * page++}`);
+          //cursorTo(process.stdout, 0);
+          //clearLine(process.stdout, 0);
+          //process.stdout.write(`${records.length * page++}`);
           records.forEach((record) => allRecords.push(record._rawJson));
           fetchNextPage();
         },
         (err) => {
-          cursorTo(process.stdout, 0);
-          clearLine(process.stdout, 0);
+          //cursorTo(process.stdout, 0);
+          //clearLine(process.stdout, 0);
           err ? reject(err) : resolve(allRecords);
         }
       );
