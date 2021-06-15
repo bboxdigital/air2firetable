@@ -7,13 +7,13 @@ Tools for importing data from Airtable to Firetable
 1. `npm install`
 2. `cp .env.example .env` and fill it out
 3. Save your [Firebase Admin SDK Key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk) in this directory and set the `FIREBASE_ADMINSDK` value in `.env` to its path
-4. `npm run all`
+4. `npm run all` to run the full import manually (you will be prompted at each step)
 
 ## Algolia functions
 
 The Algolia Cloud Functions are used to update the Algolia Index.
 
-You will first need to configure and log in with the Firebase CLI:
+You will first need to configure and login with the Firebase CLI:
 ```bash
 npm install -g firebase-tools
 firebase login
