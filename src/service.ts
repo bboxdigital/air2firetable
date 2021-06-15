@@ -32,7 +32,7 @@ import { importSchema } from "./import-schema";
 import { importTables } from "./import-tables";
 
 const runOrder: Array<[string, () => Promise<any>]> = [
-  // ["fetchSchema", async () => await fetchSchema(getEnv("AIRTABLE_BASE_ID"), getEnv("AIRTABLE_EMAIL"), getEnv("AIRTABLE_PASSWORD"))],
+  ["fetchSchema", async () => await fetchSchema(getEnv("AIRTABLE_BASE_ID"), getEnv("AIRTABLE_EMAIL"), getEnv("AIRTABLE_PASSWORD"))],
   ["fetchTables", async () => fetchTables(getEnv("AIRTABLE_BASE_ID"), getEnv("AIRTABLE_API_KEY"))],
   ["processAlgolia", async () => processAlgolia(getEnv("AIRTABLE_BASE_ID"))],
   ["processSchema", async () => processSchema(getEnv("AIRTABLE_BASE_ID"))],
