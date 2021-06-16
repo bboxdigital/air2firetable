@@ -48,10 +48,10 @@ const run = async () => {
   if (state && state.value === "RUN") {
     for (const item of runOrder) {
       console.log(`RUNNING: ${item[0]}`);
-      await stateDoc.set({ value: `RUNNING: ${item[0]}` });
+      await stateDoc.set({ value: `RUNNING: ${item[0]}`, lastUpdated: new Date() }, { merge: true });
       await item[1]();
     }
-    await stateDoc.set({ value: "DONE" });
+    await stateDoc.set({ value: "DONE", lastUpdated: new Date(), lastSuccessful: new Date() }, { merge: true });
     console.log("DONE");
   }
 };
