@@ -13,7 +13,7 @@ const fetchRecords = (table: Table, airtableTable: AirtableTable): Promise<Airta
   return new Promise((resolve, reject) => {
     table
       .select({
-        view: airtableTable.defaultView.name,
+        //view: airtableTable.defaultView.name,
       })
       .eachPage(
         (records: Record[], fetchNextPage: () => void) => {
