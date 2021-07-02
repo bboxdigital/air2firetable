@@ -83,12 +83,16 @@ export const processTables = async (baseId: string) => {
         firetableRecord = await handler(firetableSchema, tableId, firetableRecord);
       }
       for (const [key, value] of Object.entries(airtableRecord.fields)) {
-        firetableRecord.fields[nameToColumn[key].id] = await mapValue(
-          tableId,
-          airtableRecord.id,
-          nameToColumn[key],
-          value
-        );
+        if (nameToColumn[key]) {
+          firetableRecord.fields[nameToColumn[key].id] = await mapValue(
+            tableId,
+            airtableRecord.id,
+            nameToColumn[key],
+            value
+          );
+        } else {
+          console.log(`WARNING: ${tableId} column not found: ${key}`);
+        }
       }
       for (const handler of hooks["onAfterProcessRecord"]) {
         firetableRecord = await handler(firetableSchema, tableId, firetableRecord);
