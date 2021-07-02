@@ -73,6 +73,7 @@ export const processTables = async (baseId: string) => {
     const airtableRecords: AirtableRecords = await loadFile(Prefix.Airtable, tableId);
 
     const firetableRecords: FiretableRecords = [];
+    const missingCols = new Set();
 
     for (const airtableRecord of airtableRecords) {
       let firetableRecord: FiretableRecord = {
@@ -91,13 +92,19 @@ export const processTables = async (baseId: string) => {
             value
           );
         } else {
-          console.log(`WARNING: ${tableId} column not found: ${key}`);
+          missingCols.add(key);
         }
       }
       for (const handler of hooks["onAfterProcessRecord"]) {
         firetableRecord = await handler(firetableSchema, tableId, firetableRecord);
       }
       firetableRecords.push(firetableRecord);
+    }
+
+    if (missingCols.size > 0) {
+      for (const col of missingCols) {
+        console.log(`WARNING: ${tableId} column not found: ${col}`);
+      }
     }
 
     await saveFile(Prefix.Firetable, tableId, firetableRecords);
